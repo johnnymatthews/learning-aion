@@ -27,5 +27,4 @@ public class GetSet
     private static void onlyOwner() {
         Blockchain.require(Blockchain.getCaller().equals(owner));
     }
-
 }

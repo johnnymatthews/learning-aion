@@ -11,46 +11,31 @@ import org.junit.Test;
 
 import java.math.BigInteger;
 
-public class GetSetRuleTest {
+public class GetSetRuleTest 
+{
     @ClassRule
     public static AvmRule avmRule = new AvmRule(true);
-
-    //default address with balance
     private static Address from = avmRule.getPreminedAccount();
-
-    private static Address dappAddr;
+    private static Address dappAddress;
 
     @BeforeClass
     public static void deployDapp() {
-        //deploy Dapp:
-        // 1- get the Dapp byes to be used for the deploy transaction
-        // 2- deploy the Dapp and get the address.
         byte[] dapp = avmRule.getDappBytes(GetterSetter.GetSet.class, null);
-        dappAddr = avmRule.deploy(from, BigInteger.ZERO, dapp).getDappAddress();
+        dappAddress = avmRule.deploy(from, BigInteger.ZERO, dapp).getDappAddress();
     }
 
     @Test
     public void testSetString() {
-        //calling Dapps:
-        // 1- encode method name and arguments
-        // 2- make the call;
         byte[] txData = ABIUtil.encodeMethodArguments("setString","Hello Alice");
-        AvmRule.ResultWrapper result = avmRule.call(from, dappAddr, BigInteger.ZERO, txData);
-
-        // getReceiptStatus() checks the status of the transaction execution
+        AvmRule.ResultWrapper result = avmRule.call(from, dappAddress, BigInteger.ZERO, txData);
         ResultCode status = result.getReceiptStatus();
         Assert.assertTrue(status.isSuccess());
     }
 
     @Test
     public void testGetString() {
-        //calling Dapps:
-        // 1- encode method name and arguments
-        // 2- make the call;
         byte[] txData = ABIUtil.encodeMethodArguments("getString");
-        AvmRule.ResultWrapper result = avmRule.call(from, dappAddr, BigInteger.ZERO, txData);
-
-        // getReceiptStatus() checks the status of the transaction execution
+        AvmRule.ResultWrapper result = avmRule.call(from, dappAddress, BigInteger.ZERO, txData);
         ResultCode status = result.getReceiptStatus();
         Assert.assertTrue(status.isSuccess());
     }
