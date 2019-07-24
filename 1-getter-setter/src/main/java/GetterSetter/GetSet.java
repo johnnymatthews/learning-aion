@@ -6,8 +6,8 @@ import org.aion.avm.tooling.abi.Callable;
 
 public class GetSet
 {
-    private static Address owner;
     private static String myString = "This is the default string.";
+    private static Address owner;
 
     static {
         owner = Blockchain.getCaller();
