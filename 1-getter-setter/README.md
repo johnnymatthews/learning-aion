@@ -110,9 +110,47 @@ private static Address from = avmRule.getPreminedAccount();
 private static Address dappAddress;
 ```
 
-The first global variable `AvmRule` is both `public` and has the `@ClassRule` annotation applied to it.
+The first global variable `AvmRule` is both `public` and has the `@ClassRule` annotation applied to it. This means that `AvmRule` acts more like a new class instead of just a regular object.
 
-The `from` and `dappAddress` variables are both addresses. The `dappAddress` is given the result from the `getPreminedAccount()` function found within the `AvmRule` object we imported in the line above.
+The `from` and `dappAddress` variables are both addresses. The `dappAddress` is given the result from the `getPreminedAccount()` function found within the `AvmRule` object we imported in the line above. The `avmRule` object has a bunch of functions that you can use within your tests.
+
+Next up, we create a `deployDapp` method.
+
+```java
+@BeforeClass
+public static void deployDapp() {
+    byte[] dapp = avmRule.getDappBytes(GetterSetter.GetSet.class, null);
+    dappAddress = avmRule.deploy(from, BigInteger.ZERO, dapp).getDappAddress();
+}
+```
+
+All this does is take our `GetSet.java` class and deploy it to the embedded avm, sometimes called the _local kernel_. It also sets the global `dappAddress` variable to the address of the `GetSet.java` application that was just deployed. The `@BeforeClass` annotation means that this method will run before every other script is ran, which is handy because then the tests are always dealing with a _fresh_ version of the application.
+
+Next up we have the first of our tests.
+
+```java
+@Test
+public void testSetString() {
+    byte[] txData = ABIUtil.encodeMethodArguments("setString","Hello Alice");
+    AvmRule.ResultWrapper result = avmRule.call(from, dappAddress, BigInteger.ZERO, txData);
+    ResultCode status = result.getReceiptStatus();
+    Assert.assertTrue(status.isSuccess());
+}
+```
+
+The handy `@Test` annotation helps us quickly find which methods we need, and also tells some text editors that this function can be ran as a test. In this test, we're going to make sure that the `setString` method is working. First up we set the method we want to call and any arguments it needs. In our case, we're calling the `setString` method and supplying `Hello Alice` as a string. All this is then _encoded_ using `ABIUtil.encodeMethodArguments` and saved in the `txData` variable.
+
+Then we take all the information we have and call the recently deployed application using `avmRule.call`. The test grabs the `from` and `dappAddress` we set before, and also included the `txData` variable we just created. The `BigInteger.ZERO` object is where we supply any value that we wanted to send to the contract. For example, if we wanted to send some `AION` to the contract, then we would enter that information here. But since we're not moving any tokens or anything, we just need to put in a `ZERO` value there. The results of this call is saved within the `result` variable.
+
+Next up, we call the `getReceiptStatus()` function within the result object to find out if the call was successful or not.
+
+Finally, we tell the test if the `status` or the call `isSuccess`ful, then the test has passed! However, if the status was not successful, then the test has failed. The `Assert` class is a [JUnit](http://junit.sourceforge.net/javadoc/org/junit/Assert.html) class.
+
+The next test is pretty much the same, except we're attempting to call the `getString` method and we're not supplying any arguments.
+
+```java
+byte[] txData = ABIUtil.encodeMethodArguments("getString");
+```
 
 ## Frontend
 
