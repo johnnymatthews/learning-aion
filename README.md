@@ -1,6 +1,8 @@
 # Learning Aion
 
-This repository contains a collection of projects designed to help you get to grips with the Aion Network and it's ecosystem. While all the projects have a similar structure, each has a slightly separate setup process so make sure to take a look at the `readme.io` file within each of the folders.
+This repository contains a collection of projects designed to help you get to grips with the Aion Network and its eco-system. While all the projects have a similar structure, each has a slightly separate setup process so make sure to take a look at the `readme.io` file within each of the folders.
+
+This repository is absolutely **not** a replacement for the official [Aion Docs](beta-docs.aion.network). These projects are intended to supplement your learning, and give you the push you need to start building your own projects!
 
 ## I'm Stuck
 
