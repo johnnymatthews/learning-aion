@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang=en>
+
+<head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content='IE=edge;chrome=1'>
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <title>Send Aion Application</title>
+    <link rel=stylesheet href="css/marx.min.css">
+</head>
+
+<body>
+    <main>
+        <center>
+            <h1>Send Aion</h1>
+            <h3>Set a private key. Set a delivery address. Send Aion. Simple.</h3>
+            <p>Again, you'll need the private key to an account that has some <code>AION</code>.</p>
+            <hr>
+        </center>
+
+        <section>
+            <form>
+                Enter a Receiving Address:<br>
+                <input type="text" id="receiving_address_input" placeholder="0xa..." required>
+                <br>
+                Enter your Private Key:<br>
+                <input type="text" id="private_key_input" placeholder="0xa..." required>
+                <br>
+                <center>
+                    <button type="button" id="submit_button" onclick="setString()">Submit</button>
+                </center>
+            </form>
+        </section>
+
+        <footer>
+            <p>For more info, check out the <a href="https://github.com/mohnjatthews/learning-aion">Learning Aion Project.</a></p>
+            <p>&copy; 2019 &middot; <a href="https://aion.foundation">Aion Foundation</a></p>
+        </footer>
+    </main>
+</body>
+<script src="js/web3.js"></script>
+<script src="js/script.js"></script>
+</html>
