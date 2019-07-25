@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="GetterSetter.GetSetRuleTest" time="0.015" tests="2" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="GetterSetter.GetSetRuleTest" time="0.027" tests="2" errors="0" skipped="0" failures="0">
   <properties>
     <property name="gopherProxySet" value="false"/>
     <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/>
     <property name="java.specification.version" value="11"/>
     <property name="sun.cpu.isalist" value=""/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
-    <property name="java.class.path" value="/Users/john/Code/learning-projects/getter-setter/LearningAion/target/test-classes:/Users/john/Code/learning-projects/getter-setter/LearningAion/target/classes:/Users/john/Code/learning-projects/getter-setter/LearningAion/lib/org-aion-avm-api.jar:/Users/john/Code/learning-projects/getter-setter/LearningAion/lib/org-aion-avm-userlib.jar:/Users/john/Code/learning-projects/getter-setter/LearningAion/lib/org-aion-avm-tooling.jar:/Users/john/.m2/repository/junit/junit/4.11/junit-4.11.jar:/Users/john/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/john/.m2/repository/GetterSetter/LearningAion/avm/1.0-SNAPSHOT/avm-1.0-SNAPSHOT.jar:"/>
+    <property name="java.class.path" value="/Users/john/Code/learning-aion/1-getter-setter/target/test-classes:/Users/john/Code/learning-aion/1-getter-setter/target/classes:/Users/john/Code/learning-aion/1-getter-setter/lib/org-aion-avm-api.jar:/Users/john/Code/learning-aion/1-getter-setter/lib/org-aion-avm-userlib.jar:/Users/john/Code/learning-aion/1-getter-setter/lib/org-aion-avm-tooling.jar:/Users/john/.m2/repository/junit/junit/4.11/junit-4.11.jar:/Users/john/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/john/.m2/repository/GetterSetter/LearningAion/avm/1.0-SNAPSHOT/avm-1.0-SNAPSHOT.jar:"/>
     <property name="java.vm.vendor" value="AdoptOpenJDK"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.vendor.url" value="https://adoptopenjdk.net/"/>
@@ -16,9 +16,9 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="CA"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/john/Code/learning-projects/getter-setter/LearningAion/target/surefire/surefirebooter16149867406931128119.jar /Users/john/Code/learning-projects/getter-setter/LearningAion/target/surefire 2019-07-23T15-57-19_029-jvmRun1 surefire203420804419409708tmp surefire_02716290570799561220tmp"/>
+    <property name="sun.java.command" value="/Users/john/Code/learning-aion/1-getter-setter/target/surefire/surefirebooter1203237135233349279.jar /Users/john/Code/learning-aion/1-getter-setter/target/surefire 2019-07-25T12-30-33_357-jvmRun1 surefire5261674337441598471tmp surefire_010854629768887130259tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="/Users/john/Code/learning-projects/getter-setter/LearningAion/target/test-classes:/Users/john/Code/learning-projects/getter-setter/LearningAion/target/classes:/Users/john/Code/learning-projects/getter-setter/LearningAion/lib/org-aion-avm-api.jar:/Users/john/Code/learning-projects/getter-setter/LearningAion/lib/org-aion-avm-userlib.jar:/Users/john/Code/learning-projects/getter-setter/LearningAion/lib/org-aion-avm-tooling.jar:/Users/john/.m2/repository/junit/junit/4.11/junit-4.11.jar:/Users/john/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/john/.m2/repository/GetterSetter/LearningAion/avm/1.0-SNAPSHOT/avm-1.0-SNAPSHOT.jar:"/>
+    <property name="surefire.test.class.path" value="/Users/john/Code/learning-aion/1-getter-setter/target/test-classes:/Users/john/Code/learning-aion/1-getter-setter/target/classes:/Users/john/Code/learning-aion/1-getter-setter/lib/org-aion-avm-api.jar:/Users/john/Code/learning-aion/1-getter-setter/lib/org-aion-avm-userlib.jar:/Users/john/Code/learning-aion/1-getter-setter/lib/org-aion-avm-tooling.jar:/Users/john/.m2/repository/junit/junit/4.11/junit-4.11.jar:/Users/john/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/john/.m2/repository/GetterSetter/LearningAion/avm/1.0-SNAPSHOT/avm-1.0-SNAPSHOT.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="/Users/john"/>
     <property name="user.language" value="en"/>
@@ -26,13 +26,13 @@
     <property name="java.version.date" value="2019-04-16"/>
     <property name="java.home" value="/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home"/>
     <property name="file.separator" value="/"/>
-    <property name="basedir" value="/Users/john/Code/learning-projects/getter-setter/LearningAion"/>
+    <property name="basedir" value="/Users/john/Code/learning-aion/1-getter-setter"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="line.separator" value="&#10;"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="/Users/john/Code/learning-projects/getter-setter/LearningAion/target/surefire/surefirebooter16149867406931128119.jar"/>
+    <property name="surefire.real.class.path" value="/Users/john/Code/learning-aion/1-getter-setter/target/surefire/surefirebooter1203237135233349279.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="11.0.3+7"/>
     <property name="user.name" value="john"/>
@@ -46,7 +46,7 @@
     <property name="java.vendor.url.bug" value="https://github.com/AdoptOpenJDK/openjdk-build/issues"/>
     <property name="java.io.tmpdir" value="/var/folders/z_/p7gyyhzd21j33tzyd4b9lh6m0000gp/T/"/>
     <property name="java.version" value="11.0.3"/>
-    <property name="user.dir" value="/Users/john/Code/learning-projects/getter-setter/LearningAion"/>
+    <property name="user.dir" value="/Users/john/Code/learning-aion/1-getter-setter"/>
     <property name="os.arch" value="x86_64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="java.awt.printerjob" value="sun.lwawt.macosx.CPrinterJob"/>
@@ -58,6 +58,6 @@
     <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
     <property name="java.class.version" value="55.0"/>
   </properties>
-  <testcase name="testSetString" classname="GetterSetter.GetSetRuleTest" time="0.001"/>
-  <testcase name="testGetString" classname="GetterSetter.GetSetRuleTest" time="0.001"/>
+  <testcase name="testSetString" classname="GetterSetter.GetSetRuleTest" time="0.007"/>
+  <testcase name="testGetString" classname="GetterSetter.GetSetRuleTest" time="0.014"/>
 </testsuite>

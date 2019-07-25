@@ -1,2 +1,4 @@
-.settings
-target/
+*.settings*
+.*project*
+*target*
+*lib*
