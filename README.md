@@ -10,4 +10,4 @@ If you're having issues with one of the projects, you can ask for help in either
 
 ## Contributing
 
-Want to add a lesson or project of your own? Great! Just make a [pull request](https://github.com/mohnjatthews/learning-aion/compare)
+Want to add a lesson or project of your own? Great! Just make a [pull request](https://github.com/mohnjatthews/learning-aion/compare).
