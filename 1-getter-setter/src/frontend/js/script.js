@@ -1,6 +1,5 @@
 const nodeUrl = "https://aion.api.nodesmith.io/v1/mastery/jsonrpc?apiKey=ab40c8f567874400a69c1e80a1399350";
 let contractAddress = "0xa003cd11951f9a58f81df851e83cf7b5eca4b2ca5d6429dadb49021c13603357";
-
 const web3 = new Web3(new Web3.providers.HttpProvider(nodeUrl));
 
 async function getString() {
@@ -44,7 +43,6 @@ async function setString() {
         .then(transactionResponse => (signedCall = transactionResponse));
     console.log("Signed Transaction: ", signedTransaction);
 
-    // Send the transaction to the network and wait for a response.
     const transactionReceipt = await web3.eth
         .sendSignedTransaction(signedTransaction.rawTransaction)
         .on("receipt", receipt => {
@@ -54,7 +52,6 @@ async function setString() {
             );
         });
 
-    // Log the receipt.
     console.log("Transaction Receipt: ", transactionReceipt);
     getString();
 
