@@ -26,7 +26,7 @@ To run this project, you can either [import it into IntelliJ](https://beta-docs.
     mvn aion4j:deploy
     ```
 
-You can now interact with the application in the usual Maven ways. To get the string variable run `mvn aion4j:call -Dmethod='getString'`. To change the string run `mvn aion4j:call -Dmethod='setString' -Dargs='-T "New String!"'`. To view with the frontend, just open the `frontend/index.html` file in a browser.
+You can now interact with the application in the usual Maven ways. To get the string variable run `mvn aion4j:call -Dmethod='getString'`. To change the string run `mvn aion4j:call -Dmethod='setString' -Dargs='-T "New String!"'`. To view the frontend, just open the `frontend/index.html` file in a browser.
 
 ## File Layout
 

@@ -16,13 +16,11 @@ async function sendAion() {
         value: 1000000000000000000,
         gasPrice: 10000000000,
         gas: 2000000,
-        type: "0x1"
     };
     
     const signedTransaction = await web3.eth.accounts
         .signTransaction(transaction, account.privateKey)
         .then(transactionResponse => (signedCall = transactionResponse));
-    console.log("Signed Transaction: ", signedTransaction);
 
     const transactionReceipt = await web3.eth
         .sendSignedTransaction(signedTransaction.rawTransaction)
