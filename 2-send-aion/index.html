@@ -13,8 +13,8 @@
     <main>
         <center>
             <h1>Send Aion</h1>
-            <h3>Set a private key. Set a delivery address. Send Aion. Simple.</h3>
-            <p>Again, you'll need the private key to an account that has some <code>AION</code>.</p>
+            <h3>Set a private key. Set a delivery address. Send 1 Aion. Simple.</h3>
+            <p>The private key you're using to send <code>AION</code> needs to have funds in it.</p>
             <hr>
         </center>
 
@@ -24,12 +24,13 @@
                 <input type="text" id="receiving_address_input" placeholder="0xa..." required>
                 <br>
                 Enter your Private Key:<br>
-                <input type="text" id="private_key_input" placeholder="0xa..." required>
+                <input type="text" id="private_key_input" placeholder="4b45..." required>
                 <br>
                 <center>
-                    <button type="button" id="submit_button" onclick="setString()">Submit</button>
+                    <button type="button" id="submit_button" onclick="sendAion()">Submit</button>
                 </center>
             </form>
+            <p id="transaction_receipt_output"></p>
         </section>
 
         <footer>
