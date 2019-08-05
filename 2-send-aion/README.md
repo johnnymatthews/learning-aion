@@ -1,8 +1,8 @@
 # Send Aion
 
-In this project we'll create a simple web application where the user can send `AION` to another address.
+In this project, we'll create a simple web application where the user can send `AION` to another address.
 
-The great thing about this project is that you don't need to use Maven or IntelliJ, or even compile and deploy a contract! Everything happens within a JavaScript file, and utilizes the Aion Web3.js library to do everything. Infact, unlike the _Getter-Setter_ project, there isn't even a `src` folder. Everything is kept with the root of the `2-send-aion` folder.
+The great thing about this project is that you don't need to use Maven or IntelliJ, or even compile and deploy a contract! Everything happens within a JavaScript file and utilizes the Aion Web3.js library to do everything. In fact, unlike the _Getter-Setter_ project, there isn't even an `src` folder. Everything is kept with the root of the `2-send-aion` folder.
 
 ## Running the Project
 
@@ -15,8 +15,8 @@ There are three main sections within this project that we're concerned with:
 - `index.html`: The markup for the webpage, this is just plain HTML.
 - `css`: contains the `marx.min.css` file, which is just a classless CSS framework.
 - `js`:
-  - `web3.js`: creates a `Web3` object that allows us to integrate into the blockchain network.
-  - `script.js`: contains our custom logic that lets the user interact with our application.
+ - `web3.js`: creates a `Web3` object that allows us to integrate into the blockchain network.
+ - `script.js`: contains our custom logic that lets the user interact with our application.
 
 ### Index
 
@@ -51,13 +51,13 @@ document.querySelector('#submit_button').innerHTML = 'Loading...';
 document.querySelector('#submit_button').disabled = true;
 ```
 
-When making a tranasction call to a blockchain application there are three steps to take:
+When making a transaction call to a blockchain application there are three steps to take:
 
 1. Create a transaction object.
 2. Make the call to the blockchain by sending the transaction object.
 3. Get the response from the blockchain.
 
-The transaction contains vital information that the blockchain network needs to understand our request. The transaction object will look different for different types of requests, but for our tranasction call we just need to supply:
+The transaction contains vital information that the blockchain network needs to understand our request. The transaction object will look different for different types of requests, but for our transaction call we just need to supply:
 
 - The account we're using to send the `AION`.
 - The _to_ address.
@@ -66,17 +66,17 @@ The transaction contains vital information that the blockchain network needs to 
 
 ```java
 const transaction = {
-    from: account.address,
-    to: receivingAddressInput,
-    value: 1000000000000000000,
-    gasPrice: 10000000000,
-    gas: 2000000
+ from: account.address,
+ to: receivingAddressInput,
+ value: 1000000000000000000,
+ gasPrice: 10000000000,
+ gas: 2000000
 };
 ```
 
-The `from` and `to` fields are faily self explanitary, but the other fields are a bit strange.
+The `from` and `to` fields are fairly self-explanatory, but the other fields are a bit strange.
 
-While the `value` fields _should_ seem fairly intuative, the fact that there's such a large number is there is a bit strange. That's because that number doesn't represent the amount of `AION` that we want to send. It represents the amount of `NAmp` we want to send. Every single `AION` is made up of `1000000000000000000 NAmps`. That's a `1` followed by 18 `0`. The reasons for this can get a bit compilcated, but the basic jist is that having such a large number allows us to send tiny amounts of value to each other. Right now 1 Bitcoin `BTC` is worth about $11000 USD, so if users we forced to use `BTC` as the `value` field then they'd have to have _at least_ $11000 worth of Bitcoin available. Most people don't have this much money, so allowing users to send smaller amounts makes everything much more approchable for everyday users!
+While the `value` fields _should_ seem fairly intuitive, the fact that there's such a large number is a bit strange. That's because that number doesn't represent the amount of `AION` that we want to send. It represents the amount of `NAmp` we want to send. Every single `AION` is made up of `1000000000000000000 NAmps`. That's a `1` followed by 18 `0`. The reasons for this can get a bit complicated, but the basic gist is that having such a large number allows us to send tiny amounts of value to each other. Right now 1 Bitcoin `BTC` is worth about `USD 11000`, so if users we forced to use `BTC` as the `value` field then they'd have to have _at least_ $11000 worth of Bitcoin available. Most people don't have this much money, so allowing users to send smaller amounts makes everything much more approachable for everyday users!
 
 The `gasPrice` and `gas` fields relate to each other. The first, `gasPrice` is the amount you're willing to pay for every _unit_ of gas. The `gas` field is the amount of _units_ of gas you're willing to pay. Again, these values are in `NAmp`, not `AION`. So we're willing to pay `10000000000 * 2000000 NAmp` to send this transaction.
 
@@ -84,26 +84,26 @@ Next up we need to sign the transaction before sending it off to the network.
 
 ```javascript
 const signedTransaction = await web3.eth.accounts
-    .signTransaction(transaction, account.privateKey)
-    .then(transactionResponse => (signedCall = transactionResponse));
+ .signTransaction(transaction, account.privateKey)
+ .then(transactionResponse => (signedCall = transactionResponse));
 ```
 
 Everything happens within the `signTransaction(transaction, account.privateKey)` function. Again, because we're working with a blockchain network things happen asynchronously, so we put the `await` modifier at the start of the function call. It's a similar situation for getting the transaction receipt.
 
 ```javascript
 const transactionReceipt = await web3.eth
-    .sendSignedTransaction(signedTransaction.rawTransaction)
-    .on("receipt", receipt => {
-        console.log(
-            "Receipt received!\ntransactionHash =",
-            receipt.transactionHash
-        );
-    });
+ .sendSignedTransaction(signedTransaction.rawTransaction)
+ .on("receipt", receipt => {
+ console.log(
+ "Receipt received!\ntransactionHash =",
+ receipt.transactionHash
+ );
+ });
 ```
 
 Something to note here is that we're outputting our `transactionHash` object into the browser console using `console.log`. This is useful for debugging purposes.
 
-Finally, we enable the button again and reset it's text. We also show the user the transaction hash, and supply a link so that they can view the transaction on the [Aion Mastery dashboard](https://mastery.aion.network).
+Finally, we enable the button again and reset its text. We also show the user the transaction hash and supply a link so that they can view the transaction on the [Aion Mastery dashboard](https://mastery.aion.network).
 
 ```javascript
 document.querySelector('#transaction_receipt_output').innerHTML = `Tranasction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${transactionReceipt.transactionHash}">${transactionReceipt.transactionHash}</a>`
