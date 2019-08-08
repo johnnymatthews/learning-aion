@@ -191,11 +191,11 @@ Now that we've covered everything that's happening on the Java side, we can get 
 The purpose of this front end is to allow users to:
 
 1. See what the current string is.
-2. Set the string to something else, if they have the correct private key.
+2. Set the string to something else, if they have the [Aiwa](https://getaiwa.com/) browser extension.
 
-This file is incredibly simple, and just contains two input fields to take our private key, and the new string we want to input. It should be noted that having a user enter their private key into a webpage is incredibly dangerous and should never be done in applications that real users are going to use. We've just done it here to simplify things.
+This file is incredibly simple, and just contains an input field to take the new string we want to input. It should be noted that in order to make transactions with Aiwa, you must have AION in the wallet. Currently, you can get AION Mastery coins through [BlockX Labs's faucet](https://faucets.blockxlabs.com/).
 
-The new string input field has an `id` of `new_string_input`, the private key input field has an `id` of `private_key_input`, and the current string output has an `id` of `current_string_output`. This is so we can reference them easily within our custom `script.js` file.
+The new string input field has an `id` of `new_string_input` and the current string output has an `id` of `current_string_output`. This is so we can reference them easily within our custom `script.js` file.
 
 ### CSS
 
@@ -248,7 +248,7 @@ The `setString` method is slightly more complicated but still fairly easy to und
 
 First up, we disable the submit button and change the text to _Loading..._. This is just a precaution so that the user doesn't accidentally send the same request to the network several times. This is generally good practice and you should follow this in your regular projects.
 
-Next, we grab the private key and new string values from the inputs on the `index.html` page. These are saved into the `privateKeyInput` and `newStringInput` variables. We also create an account object here. This is done by supplying the `privateKeyToAccount()` function with the `privateKeyInput` variable we just made. The account object later gets embedded into the transaction object.
+Next, we grab the new string value from the input on the `index.html` page. This is saved into the `newStringInput` variable.
 
 Just like in the `getString` method, we create a `data` object with the necessary information in it. The `method` and `encode()` sections of this object should seem familiar, however, the `inputs` section is new. When we requested the `getString` method, we didn't have to include any arguments, but now we do.
 
@@ -268,13 +268,16 @@ public static void exampleMethod(String inputString, int inputInteger) {
 
 So back to our `setString` method. We've created our `data` object and now we need to add it into the `transaction` object. This object is similar to the one we made in the `getString` method, but there are some new additions:
 
-- `from`: defines which account is making the request. This is the account which will pay for the transaction.
 - `gasPrice`: the amount you're willing to pay for every _unit_ of gas.
 - `gas`: the amount of _units_ of gas you're willing to pay.
 
+> Note: the `from` address does not need to be added to the transaction object when working with Aiwa because Aiwa will add the account details the object for you.
+
 When you're making any changes to the blockchain then you need to pay a fee. _Gas_ is the blockchain community's round-about way of saying _fee_.
 
-The next few steps are similar to how things worked for the `getString` method, however this time we have to sign the transaction before we send it off to the network. This happens with `signTransaction(transaction, account.privateKey)`. Again, because we're working with a blockchain network, things happen asynchronously, so we put the `await` modifier at the start of the function call. It's a similar situation for getting the transaction receipt.
+The next few steps are similar to how things worked for the `getString` method. We call `aionweb3.sendTransaction(transactionObject)` to tell Aiwa to propose a transaction to the user. Again, because we're working with a blockchain network, things happen asynchronously, so we put the `await` modifier at the start of the function call. It's a similar situation for getting the transaction receipt.
+
+After a transaction hash is returned, we will create an asynchronous `setInterval()` function to periodically check for a transaction receipt, meaning the transaction was complete.
 
 Once we've got confirmation that the transaction went through ok we call the `getString` method again so that we can see the new things. We also enable the submit button and change it's text to _Submit_.
 
@@ -282,4 +285,4 @@ Finally, we have a small function that called the `getString` method once the pa
 
 ## Suggested Improvements
 
-There's a lot of room for improvement in this application. Having a user enter their private key into a window is not best practice. A better solution would be to couple this application with a browser wallet like [Syna+](https://chrome.google.com/webstore/detail/syna%20/bnhpllgghialpkpbeenoalpeoneieaje) or [Aiwa](https://getaiwa.com/). There is also no validation on any of the input fields, which would be a big issue if this application were in a production environment.
+There's some room for improvement in this application. For example, there is no validation on any of the input fields, which would be a big issue if this application were in a production environment.

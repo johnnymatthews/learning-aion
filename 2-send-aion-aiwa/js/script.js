@@ -7,7 +7,6 @@ async function sendAion() {
 
     let receivingAddressInput = document.querySelector("#receiving_address_input").value;
 
-
     const transactionObject = {
         to: receivingAddressInput,
         value: 1000000000000000000,
@@ -21,8 +20,8 @@ async function sendAion() {
     let timer = setInterval(
         async function() {
             if(await web3.eth.getTransactionReceipt(txHash)){
-                console.log("getTransactionReceipt", txHash);
                 console.log("onTxComplete");
+                document.querySelector('#transaction_receipt_output').innerHTML = `Tranasction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${txHash}">${txHash}</a>`
                 document.querySelector('#submit_button').innerHTML = 'Submit';
                 document.querySelector('#submit_button').disabled = false;
                 clearInterval(timer);

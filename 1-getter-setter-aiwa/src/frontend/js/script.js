@@ -29,7 +29,6 @@ async function setString() {
         .encode();
 
     const transactionObject = {
-        // from: null,
         to: contractAddress,
         data: data,
         gasPrice: 10000000000,

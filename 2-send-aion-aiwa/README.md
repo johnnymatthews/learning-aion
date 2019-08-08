@@ -2,7 +2,7 @@
 
 In this project, we'll create a simple web application where the user can send `AION` to another address.
 
-The great thing about this project is that you don't need to use Maven or IntelliJ, or even compile and deploy a contract! Everything happens within a JavaScript file and utilizes the Aion Web3.js library to do everything. In fact, unlike the _Getter-Setter_ project, there isn't even an `src` folder. Everything is kept with the root of the `2-send-aion` folder.
+The great thing about this project is that you don't need to use Maven or IntelliJ, or even compile and deploy a contract! Everything happens within a JavaScript file and utilizes the Aion Web3.js library to do everything. In fact, unlike the _Getter-Setter_ project, there isn't even an `src` folder. Everything is kept with the root of the `2-send-aion-aiwa` folder.
 
 ## Running the Project
 
@@ -15,19 +15,19 @@ There are three main sections within this project that we're concerned with:
 - `index.html`: The markup for the webpage, this is just plain HTML.
 - `css`: contains the `marx.min.css` file, which is just a classless CSS framework.
 - `js`:
- - `web3.js`: creates a `Web3` object that allows us to integrate into the blockchain network.
- - `script.js`: contains our custom logic that lets the user interact with our application.
+  - `web3.js`: creates a `Web3` object that allows us to integrate into the blockchain network.
+  - `script.js`: contains our custom logic that lets the user interact with our application.
 
 ### Index
 
 The purpose of this front end is to allow users to:
 
 1. Enter an address to send `1 AION` to.
-2. Enter the private key of the account you want to send `AION` from.
+2. Allow the use of Aiwa to send `AION` from.
 
 This file is incredibly simple, and just contains two input fields to take our private key, and the address of the account we want to send `AION` to. It should be noted that having a user enter their private key into a webpage is incredibly dangerous and should never be done in applications that real users are going to use. We've just done it here to simplify things.
 
-The _to account_ input field has an `id` of `receiving_address_input`, the private key input field has an `id` of `private_key_input`. There is also a hidden field with an `id` of `transaction_receipt_output` which shows the user the transaction receipt once everything has finished.
+The _to account_ input field has an `id` of `receiving_address_input`. There is also a hidden field with an `id` of `transaction_receipt_output` which shows the user the transaction receipt once everything has finished.
 
 ### CSS
 
@@ -59,14 +59,12 @@ When making a transaction call to a blockchain application there are three steps
 
 The transaction contains vital information that the blockchain network needs to understand our request. The transaction object will look different for different types of requests, but for our transaction call we just need to supply:
 
-- The account we're using to send the `AION`.
 - The _to_ address.
 - The amount of `AION` we want to send in `NAmps`.
 - The gas amount and gas price.
 
 ```java
 const transaction = {
- from: account.address,
  to: receivingAddressInput,
  value: 1000000000000000000,
  gasPrice: 10000000000,
@@ -74,31 +72,36 @@ const transaction = {
 };
 ```
 
-The `from` and `to` fields are fairly self-explanatory, but the other fields are a bit strange.
+> Note: the `from` address does not need to be added to the transaction object when working with Aiwa because Aiwa will add the account details the object for you.
 
 While the `value` fields _should_ seem fairly intuitive, the fact that there's such a large number is a bit strange. That's because that number doesn't represent the amount of `AION` that we want to send. It represents the amount of `NAmp` we want to send. Every single `AION` is made up of `1000000000000000000 NAmps`. That's a `1` followed by 18 `0`. The reasons for this can get a bit complicated, but the basic gist is that having such a large number allows us to send tiny amounts of value to each other. Right now 1 Bitcoin `BTC` is worth about `USD 11000`, so if users we forced to use `BTC` as the `value` field then they'd have to have _at least_ $11000 worth of Bitcoin available. Most people don't have this much money, so allowing users to send smaller amounts makes everything much more approachable for everyday users!
 
 The `gasPrice` and `gas` fields relate to each other. The first, `gasPrice` is the amount you're willing to pay for every _unit_ of gas. The `gas` field is the amount of _units_ of gas you're willing to pay. Again, these values are in `NAmp`, not `AION`. So we're willing to pay `10000000000 * 2000000 NAmp` to send this transaction.
 
-Next up we need to sign the transaction before sending it off to the network.
+Next up we need to tell Aiwa to propose a transaction to the user.
 
 ```javascript
-const signedTransaction = await web3.eth.accounts
- .signTransaction(transaction, account.privateKey)
- .then(transactionResponse => (signedCall = transactionResponse));
+let txHash = await aionweb3.sendTransaction(transactionObject);
 ```
 
-Everything happens within the `signTransaction(transaction, account.privateKey)` function. Again, because we're working with a blockchain network things happen asynchronously, so we put the `await` modifier at the start of the function call. It's a similar situation for getting the transaction receipt.
+Again, because we're working with a blockchain network things happen asynchronously, so we put the `await` modifier at the start of the function call. It's a similar situation for getting the transaction receipt.
+
+After a transaction hash is returned, we will create an asynchronous `setInterval()` function to periodically check for a transaction receipt, meaning the transaction was complete.
 
 ```javascript
-const transactionReceipt = await web3.eth
- .sendSignedTransaction(signedTransaction.rawTransaction)
- .on("receipt", receipt => {
- console.log(
- "Receipt received!\ntransactionHash =",
- receipt.transactionHash
- );
- });
+    let timer = setInterval(
+        async function() {
+            if(await web3.eth.getTransactionReceipt(txHash)){
+                document.querySelector('#transaction_receipt_output').innerHTML = `Tranasction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${txHash}">${txHash}</a>`
+                document.querySelector('#submit_button').innerHTML = 'Submit';
+                document.querySelector('#submit_button').disabled = false;
+                clearInterval(timer);
+            } else {
+                console.log("Txn Pending", txHash);
+            }
+        },
+        1000
+    );
 ```
 
 Something to note here is that we're outputting our `transactionHash` object into the browser console using `console.log`. This is useful for debugging purposes.
@@ -106,12 +109,11 @@ Something to note here is that we're outputting our `transactionHash` object int
 Finally, we enable the button again and reset its text. We also show the user the transaction hash and supply a link so that they can view the transaction on the [Aion Mastery dashboard](https://mastery.aion.network).
 
 ```javascript
-document.querySelector('#transaction_receipt_output').innerHTML = `Tranasction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${transactionReceipt.transactionHash}">${transactionReceipt.transactionHash}</a>`
-
+document.querySelector('#transaction_receipt_output').innerHTML = `Tranasction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${txHash}">${txHash}</a>`
 document.querySelector('#submit_button').innerHTML = 'Submit';
 document.querySelector('#submit_button').disabled = false;
 ```
 
 ## Suggested Improvements
 
-There's a lot of room for improvement in this application. Having a user enter their private key into a window is not best practice. A better solution would be to couple this application with a browser wallet like [Syna+](https://chrome.google.com/webstore/detail/syna%20/bnhpllgghialpkpbeenoalpeoneieaje) or [Aiwa](https://getaiwa.com/). There is also no validation on any of the input fields, which would be a big issue if this application were in a production environment.
+There's some room for improvement in this application. For example, there is no validation on any of the input fields, which would be a big issue if this application were in a production environment.
