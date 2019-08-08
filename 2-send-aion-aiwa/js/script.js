@@ -5,34 +5,31 @@ async function sendAion() {
     document.querySelector('#submit_button').innerHTML = 'Loading...';
     document.querySelector('#submit_button').disabled = true;
 
-    let privateKeyInput = document.querySelector('#private_key_input').value;
     let receivingAddressInput = document.querySelector("#receiving_address_input").value;
 
-    const account = web3.eth.accounts.privateKeyToAccount(privateKeyInput);
 
-    const transaction = {
-        from: account.address,
+    const transactionObject = {
         to: receivingAddressInput,
         value: 1000000000000000000,
         gasPrice: 10000000000,
         gas: 2000000,
     };
-    
-    const signedTransaction = await web3.eth.accounts
-        .signTransaction(transaction, account.privateKey)
-        .then(transactionResponse => (signedCall = transactionResponse));
 
-    const transactionReceipt = await web3.eth
-        .sendSignedTransaction(signedTransaction.rawTransaction)
-        .on("receipt", receipt => {
-            console.log(
-                "Receipt received!\ntransactionHash =",
-                receipt.transactionHash
-            );
-        });
+    let txHash = await aionweb3.sendTransaction(transactionObject);
+    console.log("txHash", txHash);
 
-    document.querySelector('#transaction_receipt_output').innerHTML = `Tranasction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${transactionReceipt.transactionHash}">${transactionReceipt.transactionHash}</a>`
-
-    document.querySelector('#submit_button').innerHTML = 'Submit';
-    document.querySelector('#submit_button').disabled = false;
+    let timer = setInterval(
+        async function() {
+            if(await web3.eth.getTransactionReceipt(txHash)){
+                console.log("getTransactionReceipt", txHash);
+                console.log("onTxComplete");
+                document.querySelector('#submit_button').innerHTML = 'Submit';
+                document.querySelector('#submit_button').disabled = false;
+                clearInterval(timer);
+            } else {
+                console.log("Txn Pending", txHash);
+            }
+        },
+        1000
+    );
 }
