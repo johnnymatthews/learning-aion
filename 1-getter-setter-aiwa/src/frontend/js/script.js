@@ -3,6 +3,7 @@ let contractAddress = "0xa003cd11951f9a58f81df851e83cf7b5eca4b2ca5d6429dadb49021
 const web3 = new Web3(new Web3.providers.HttpProvider(nodeUrl));
 
 async function getString() {
+
     let data = web3.avm.contract.method("getString").encode();
     const transactionObject = {
         to: contractAddress,
@@ -16,47 +17,45 @@ async function getString() {
 }
 
 async function setString() {
+
     document.querySelector('#submit_button').innerHTML = 'Loading...';
     document.querySelector('#submit_button').disabled = true;
 
-    let privateKeyInput = document.querySelector('#private_key_input').value;
     let newStringInput = document.querySelector("#new_string_input").value;
-
-    const account = web3.eth.accounts.privateKeyToAccount(privateKeyInput);
 
     let data = web3.avm.contract
         .method("setString")
         .inputs(["string"], [newStringInput])
         .encode();
 
-    const transaction = {
-        from: account.address,
+    const transactionObject = {
+        // from: null,
         to: contractAddress,
         data: data,
         gasPrice: 10000000000,
         gas: 2000000,
         type: "0x1"
     };
-    
-    const signedTransaction = await web3.eth.accounts
-        .signTransaction(transaction, account.privateKey)
-        .then(transactionResponse => (signedCall = transactionResponse));
-    console.log("Signed Transaction: ", signedTransaction);
 
-    const transactionReceipt = await web3.eth
-        .sendSignedTransaction(signedTransaction.rawTransaction)
-        .on("receipt", receipt => {
-            console.log(
-                "Receipt received!\ntransactionHash =",
-                receipt.transactionHash
-            );
-        });
+    let txHash = await aionweb3.sendTransaction(transactionObject);
+    console.log("txHash", txHash);
 
-    console.log("Transaction Receipt: ", transactionReceipt);
-    getString();
+    let timer = setInterval(
+        async function() {
+            if(await web3.eth.getTransactionReceipt(txHash)){
+                console.log("getTransactionReceipt", txHash);
+                console.log("onTxComplete");
+                document.querySelector('#submit_button').innerHTML = 'Submit';
+                document.querySelector('#submit_button').disabled = false;
+                getString();
+                clearInterval(timer);
+            } else {
+                console.log("Txn Pending", txHash);
+            }
+        },
+        1000
+    );
 
-    document.querySelector('#submit_button').innerHTML = 'Submit';
-    document.querySelector('#submit_button').disabled = false;
 }
 
 window.onload = function() {
