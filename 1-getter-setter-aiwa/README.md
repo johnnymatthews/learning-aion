@@ -183,7 +183,7 @@ Now that we've covered everything that's happening on the Java side, we can get 
 - `index.html`: The markup for the webpage, this is just plain HTML.
 - `css`: contains the `marx.min.css` file, which is just a classless CSS framework.
 - `js`:
-  - `web3.js`: creates a `Web3` object that allows us to integrate into the blockchain network.
+  - `web3.min.js`: creates a `Web3` object that allows us to integrate into the blockchain network.
   - `script.js`: contains our custom logic that lets the user interact with our application.
 
 ### Index
@@ -203,13 +203,13 @@ We're using [Mblode's](https://github.com/mblode) incredible [Marx CSS framework
 
 ### JavaScript
 
-As mentioned before, we have two JavaScript files: `web3.js` and `script.js`. The `web3.js` file is taken from the [Aion Web3.js repository](https://github.com/aionnetwork/aion_web3), and we won't be changing anything within this file. All of our coding takes place within the `script.js` file.
+As mentioned before, we have two JavaScript files: `web3.min.js` and `script.js`. The `web3.min.js` file is taken from the [Aion Web3.js repository](https://github.com/aionnetwork/aion_web3), and we won't be changing anything within this file. All of our coding takes place within the `script.js` file.
 
 Right at the top of `script.js` we define three global variables:
 
 - `nodeUrl`: the URL of the Aion node we want to connect to.
 - `contractAddress`: the address of our application that is deployed on the Aion Testnet.
-- `web3`: a copy of the `Web3` objected defined by `web3.js`. This object takes our `nodeUrl` as an argument so it knows where to route the calls through.
+- `web3`: a copy of the `Web3` objected defined by `web3.min.js`. This object takes our `nodeUrl` as an argument so it knows where to route the calls through.
 
 There are two _major_ methods within this script: `getString()` and `setString()`. Both of them have the `async` attribute, meaning that they will be executed asynchronously as soon as they are available. You can find out more about `async` functions from the [Mozilla Developers Network](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function).
 

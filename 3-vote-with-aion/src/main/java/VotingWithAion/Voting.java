@@ -29,13 +29,15 @@ public class Voting {
     private static int questionID;
 
     private static class QuestionInfo {
+        String question;
         String[]  answers;
         int requiredVotes;
         boolean closed;
         AionList<String> votes;
         AionSet<Address> voters;
 
-        QuestionInfo(String[] answers, int requiredVotes) {
+        QuestionInfo(String question, String[] answers, int requiredVotes) {
+            this.question = question;
             this.answers = answers;
             this.requiredVotes = requiredVotes;
             this.votes = new AionList<>();
@@ -49,10 +51,48 @@ public class Voting {
         questionID = 0;
     }
 
+//    @Callable
+//    public static void setOwner(/*Address newOwner*/){
+////        Blockchain.require(Blockchain.getCaller().equals(owner));
+////        owner = newOwner;
+//        owner = Blockchain.getCaller();
+//    }
+
+    @Callable
+    public static String getQuestion(int questionID) {
+        return Questions.get(questionID).question;
+    }
+
+    @Callable
+    public static boolean getQuestionStatus(int questionID) {
+        return Questions.get(questionID).closed;
+    }
+
+    @Callable
+    public static int getRequiredVotes(int questionID) {
+        return Questions.get(questionID).requiredVotes;
+    }
+
+    @Callable
+    public static String[] getAnswers(int questionID) {
+        return Questions.get(questionID).answers;
+    }
+
+    @Callable
+    public static String[] getVotes(int questionID) {
+        String[] votes = new String[Questions.get(questionID).votes.size()];
+        int i = 0;
+        for (String vote : Questions.get(questionID).votes) {
+            votes[i] = vote;
+            i++;
+        }
+        return votes;
+    }
+
     @Callable
     public static void newQuestion(String question, String[] answers, int requiredVotes) {
         Blockchain.require(Blockchain.getCaller().equals(owner));
-        Questions.put(questionID, new QuestionInfo(answers, requiredVotes));
+        Questions.put(questionID, new QuestionInfo(question, answers, requiredVotes));
         Blockchain.log("NewQuestionAdded".getBytes(), question.getBytes());
         questionID ++;
     }
@@ -68,20 +108,6 @@ public class Voting {
         }
     }
 
-    @Callable
-    public static String[] getVotes(int questionID) {
-        String[] votes = new String[Questions.get(questionID).votes.size()];
-        int i = 0;
-        for (String vote : Questions.get(questionID).votes) {
-            votes[0] = vote;
-            i++;
-        }
-        return votes;
-    }
 
-    @Callable
-    public static boolean getQuestionStatus(int questionID) {
-        return Questions.get(questionID).closed;
-    }
 
 }

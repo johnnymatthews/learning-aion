@@ -19,20 +19,14 @@
         </center>
 
         <section>
-            <center>
-                <button type="button" id="happy_button" onclick="getQuestion(0)">Happy Button</button>
-            </center>
             <form>
                 Enter your Private Key:<br>
                 <input type="text" id="private_key_input" placeholder="4b45..." required>
                 <br>
-                Enter the question index you would like to vote on:<br>
-                <input type="text" id="questionID_input" placeholder="4b45..." required>
-                <br>
                 <center>
-                    <text onclick="getQuestion(0)"><i id="current_question"></i></text>
-                    <button type="button" id="yes_button" onclick="sendAion()">1</button>
-                    <button type="button" id="no_button" onclick="sendAion()">2</button>
+                    <text onclick="getString()"><i id="current_question"></i></text>
+                    <button type="button" id="yes_button" onclick="sendAion()">Vote Yes</button>
+                    <button type="button" id="no_button" onclick="sendAion()">Vote No</button>
                 </center>
                 <br>
                 <center>
@@ -48,6 +42,6 @@
         </footer>
     </main>
 </body>
-<script src="js/web3.min.js"></script>
-<script src="js/script.js"></script>
+<!--<script src="js/web3.min.js"></script>-->
+<!--<script src="js/script.js"></script>-->
 </html>

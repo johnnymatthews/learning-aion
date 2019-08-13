@@ -16,7 +16,7 @@
         <aion4j.plugin.version>0.7.0</aion4j.plugin.version>
         <avm.lib.dir>${project.basedir}/lib</avm.lib.dir>
 
-        <contract.main.class>VotingWithAion.HelloAvm</contract.main.class>
+        <contract.main.class>VotingWithAion.Voting</contract.main.class>
     </properties>
 
     <dependencies>
