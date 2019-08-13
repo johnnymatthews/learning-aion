@@ -1,0 +1,87 @@
+package VotingWithAion;
+
+import avm.*;
+import org.aion.avm.tooling.abi.Callable;
+import org.aion.avm.userlib.AionList;
+import org.aion.avm.userlib.AionMap;
+import org.aion.avm.userlib.AionSet;
+
+import java.awt.desktop.QuitEvent;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.stream.Stream;
+
+/**
+ * A simple voting contract for a voting dapp.
+ *
+ * Only the contract owner can submit a new question.
+ * Each account can only vote for a question once.
+ * The poll will be closed once a certain number of vote has been reached.
+ *
+ *See https://github.com/mohnjatthews/learning-aion for more dapp examples.
+ *
+ */
+
+public class Voting {
+
+    private static Address owner;
+    private static AionMap<Integer, QuestionInfo> Questions = new AionMap<>();
+    private static int questionID;
+
+    private static class QuestionInfo {
+        String[]  answers;
+        int requiredVotes;
+        boolean closed;
+        AionList<String> votes;
+        AionSet<Address> voters;
+
+        QuestionInfo(String[] answers, int requiredVotes) {
+            this.answers = answers;
+            this.requiredVotes = requiredVotes;
+            this.votes = new AionList<>();
+            this.closed = false;
+            this.voters = new AionSet<>();
+        }
+    }
+
+    static {
+        owner = Blockchain.getCaller();
+        questionID = 0;
+    }
+
+    @Callable
+    public static void newQuestion(String question, String[] answers, int requiredVotes) {
+        Blockchain.require(Blockchain.getCaller().equals(owner));
+        Questions.put(questionID, new QuestionInfo(answers, requiredVotes));
+        Blockchain.log("NewQuestionAdded".getBytes(), question.getBytes());
+        questionID ++;
+    }
+
+    @Callable
+    public static void newVote(int questionID, String answer) {
+        Blockchain.require(!Questions.get(questionID).closed && !Questions.get(questionID).voters.contains(Blockchain.getCaller()));
+        Questions.get(questionID).voters.add(Blockchain.getCaller());
+        Questions.get(questionID).votes.add(answer);
+        if(Questions.get(questionID).votes.size() == Questions.get(questionID).requiredVotes) {
+            Questions.get(questionID).closed = true;
+            Blockchain.log(("Question"+questionID+"Closed").getBytes());
+        }
+    }
+
+    @Callable
+    public static String[] getVotes(int questionID) {
+        String[] votes = new String[Questions.get(questionID).votes.size()];
+        int i = 0;
+        for (String vote : Questions.get(questionID).votes) {
+            votes[0] = vote;
+            i++;
+        }
+        return votes;
+    }
+
+    @Callable
+    public static boolean getQuestionStatus(int questionID) {
+        return Questions.get(questionID).closed;
+    }
+
+}
