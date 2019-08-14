@@ -2,7 +2,7 @@ const nodeUrl = "https://aion.api.nodesmith.io/v1/mastery/jsonrpc?apiKey=da85417
 const web3 = new Web3(new Web3.providers.HttpProvider(nodeUrl));
 const pk = "d2abbfb69e2927abea2388ce74aa3199d86293a4704de0c6ff3572ec6719fefa83f31c24396498eccd1f4eaf690f9e24110c5a1c55ef436c1fe1aea5b452af40";
 
-let contractAddress = "0xa04e1e6990feb8182f53e286a5d113b1e05aed5e9e284b8aab45667d6e044306";
+let contractAddress = "0xa0c468ba67c12a47637fb21c786b870085b81d6182be2fb2812ac7616dfc8672";
 let abi = `
 0.0
 VotingWithAion.Voting
@@ -10,8 +10,9 @@ Clinit: ()
 public static String getQuestion(int)
 public static boolean getQuestionStatus(int)
 public static int getRequiredVotes(int)
-public static String[] getAnswers(int)
+public static String[] getChoices(int)
 public static String[] getVotes(int)
+public static int getNumberQuestions()
 public static void newQuestion(String, String[], int)
 public static void newVote(int, String)
 `;
@@ -23,68 +24,82 @@ Clinit: ()
 public static String getQuestion(int)
 public static boolean getQuestionStatus(int)
 public static int getRequiredVotes(int)
-public static String[] getAnswers(int)
+public static String[] getChoices(int)
 public static String[] getVotes(int)
+public static int getNumberQuestions()
 public static void newVote(int, String)
 `;
 
 let abiObj = web3.avm.contract.Interface(abi);
 web3.avm.contract.initBinding(contractAddress, abiObj, pk);
 
-class Question {
-    constructor(question, status, requiredVotes, answers, votes){
+class Poll {
+    constructor(question, status, requiredVotes, choices, votes){
         this.question = question;
         this.status = status;
         this.requiredVotes = requiredVotes;
-        this.answers = answers;
+        this.choices = choices;
         this.votes = votes;
     }
 }
 
-async function getQuestionObject(questionID){
-    return new Question(
+async function getPollObject(questionID){
+    return new Poll(
         await getQuestion(questionID),
         await getQuestionStatus(questionID),
         await getRequiredVotes(questionID),
-        await getAnswers(questionID),
+        await getChoices(questionID),
         await getVotes(questionID),
     );
 }
 
+function makeButton(questionID, choice){
+    return `<button style="margin:5px;" type='button' id='vote_button' onclick='newVote(${questionID}, "${choice}")'>${choice}</button>`;
+}
+
+async function getPoll(){
+    let questionID = document.querySelector('#poll_picker').value;
+    let poll = await getPollObject(questionID);
+
+    document.getElementById("poll_buttons").innerHTML = '';
+
+    let votes = document.createElement("div");
+
+    for (let i in poll.choices) {
+        votes.innerHTML += makeButton(questionID, poll.choices[i])
+    }
+    document.getElementById("poll_buttons").appendChild(votes);
+
+    document.querySelector('#question_name').innerHTML = `Question: ${poll.question}`
+}
+
 async function getQuestion(questionID) {
-    let response = await web3.avm.contract.readOnly.getQuestion(questionID);
-    // console.log("getQuestion:", response);
-    document.querySelector('#current_question').innerHTML = response;
-    return response;
+    return await web3.avm.contract.readOnly.getQuestion(questionID);
 }
 
 async function getQuestionStatus(questionID) {
-    let response = await web3.avm.contract.readOnly.getQuestionStatus(questionID);
-    // console.log("getQuestionStatus:", response);
-    return response;
+    return await web3.avm.contract.readOnly.getQuestionStatus(questionID);
 }
 
 async function getRequiredVotes(questionID) {
-    let response = await web3.avm.contract.readOnly.getRequiredVotes(questionID);
-    // console.log("getRequiredVotes:", response);
-    return response;
+    return await web3.avm.contract.readOnly.getRequiredVotes(questionID);
 }
 
-async function getAnswers(questionID) {
-    let response = await web3.avm.contract.readOnly.getAnswers(questionID);
-    // console.log("getAnswers:", response);
-    return response;
+async function getChoices(questionID) {
+    return await web3.avm.contract.readOnly.getChoices(questionID);
 }
 
 async function getVotes(questionID) {
-    let response = await web3.avm.contract.readOnly.getVotes(questionID);
-    // console.log("getVotes:", response);
-    return response;
+    return await web3.avm.contract.readOnly.getVotes(questionID);
 }
 
-async function newVote(questionID, answer) {
-    document.querySelector('#submit_button').innerHTML = 'Loading...';
-    document.querySelector('#submit_button').disabled = true;
+async function getNumberQuestions() {
+    return await web3.avm.contract.readOnly.getNumberQuestions();
+}
+
+async function newVote(questionID, choice) {
+    // document.querySelector('#submit_button').innerHTML = 'Loading...';
+    // document.querySelector('#submit_button').disabled = true;
 
     // let privateKeyInput = document.querySelector('#private_key_input').value;
     let privateKeyInput = pk;
@@ -92,7 +107,7 @@ async function newVote(questionID, answer) {
 
     let data = web3.avm.contract
         .method("newVote")
-        .inputs(["int","string"], [questionID,answer])
+        .inputs(["int","string"], [questionID,choice])
         .encode();
 
     const transaction = {
@@ -120,10 +135,10 @@ async function newVote(questionID, answer) {
 
     console.log("Transaction Receipt: ", transactionReceipt);
 
-    document.querySelector('#submit_button').innerHTML = 'Submit';
-    document.querySelector('#submit_button').disabled = false;
+    // document.querySelector('#submit_button').innerHTML = 'Submit';
+    // document.querySelector('#submit_button').disabled = false;
 }
 
 window.onload = function() {
-    getQuestion(0);
+    // getQuestion(0);
 };

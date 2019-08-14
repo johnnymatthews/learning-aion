@@ -14,30 +14,42 @@
         <center>
             <h1>Aion Voting</h1>
             <h3>Set a private key. Set poll. Vote on poll.</h3>
-            <p>The private key you're using to send <code>AION</code> needs to have funds in it.</p>
+            <p>The private key you're using to vote needs to have funds in it.</p>
             <hr>
         </center>
 
         <section>
-            <center>
-                <button type="button" id="happy_button" onclick="getQuestion(0)">Happy Button</button>
-            </center>
             <form>
                 Enter your Private Key:<br>
                 <input type="text" id="private_key_input" placeholder="4b45..." required>
                 <br>
-                Enter the question index you would like to vote on:<br>
-                <input type="text" id="questionID_input" placeholder="4b45..." required>
-                <br>
                 <center>
-                    <text onclick="getQuestion(0)"><i id="current_question"></i></text>
-                    <button type="button" id="yes_button" onclick="sendAion()">1</button>
-                    <button type="button" id="no_button" onclick="sendAion()">2</button>
+                    <text style="padding-right:10px;">Enter the questionID you would like to vote on:</text>
+                    <select id="poll_picker" style="width:70px;display:inline-block;" name="questionIDs">
+                        <option value=0>0</option>
+                        <option value=1>1</option>
+                        <option value=2>2</option>
+                        <option value=3>3</option>
+                        <option value=4>4</option>
+                    </select>
+                    <button type="button" id="getQuestion_button" onclick="getPoll()">Get Poll</button>
+                    <br>
+                    <h4 style="margin-bottom:5px;" id="question_name"></h4>
+<!--                    <p style="margin-bottom:5px;">Each account may vote once</p>-->
+                    <div id="poll_buttons">
+
+                    </div>
                 </center>
-                <br>
-                <center>
-                    <button type="button" id="submit_button" onclick="sendAion()">Submit Vote</button>
-                </center>
+
+<!--                <center>-->
+<!--                    <text onclick="getQuestion(0)"><i id="current_question"></i></text>-->
+<!--                    <button type="button" id="yes_button" onclick="sendAion()">1</button>-->
+<!--                    <button type="button" id="no_button" onclick="sendAion()">2</button>-->
+<!--                </center>-->
+<!--                <br>-->
+<!--                <center>-->
+<!--                    <button type="button" id="submit_button" onclick="sendAion()">Submit Vote</button>-->
+<!--                </center>-->
             </form>
             <p id="transaction_receipt_output"></p>
         </section>

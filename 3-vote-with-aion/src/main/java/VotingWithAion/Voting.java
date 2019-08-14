@@ -30,15 +30,15 @@ public class Voting {
 
     private static class QuestionInfo {
         String question;
-        String[]  answers;
+        String[]  choices;
         int requiredVotes;
         boolean closed;
         AionList<String> votes;
         AionSet<Address> voters;
 
-        QuestionInfo(String question, String[] answers, int requiredVotes) {
+        QuestionInfo(String question, String[] choices, int requiredVotes) {
             this.question = question;
-            this.answers = answers;
+            this.choices = choices;
             this.requiredVotes = requiredVotes;
             this.votes = new AionList<>();
             this.closed = false;
@@ -74,8 +74,8 @@ public class Voting {
     }
 
     @Callable
-    public static String[] getAnswers(int questionID) {
-        return Questions.get(questionID).answers;
+    public static String[] getChoices(int questionID) {
+        return Questions.get(questionID).choices;
     }
 
     @Callable
@@ -90,18 +90,23 @@ public class Voting {
     }
 
     @Callable
-    public static void newQuestion(String question, String[] answers, int requiredVotes) {
+    public static int getNumberQuestions(){
+        return Questions.size();
+    }
+
+    @Callable
+    public static void newQuestion(String question, String[] choices, int requiredVotes) {
         Blockchain.require(Blockchain.getCaller().equals(owner));
-        Questions.put(questionID, new QuestionInfo(question, answers, requiredVotes));
+        Questions.put(questionID, new QuestionInfo(question, choices, requiredVotes));
         Blockchain.log("NewQuestionAdded".getBytes(), question.getBytes());
         questionID ++;
     }
 
     @Callable
-    public static void newVote(int questionID, String answer) {
+    public static void newVote(int questionID, String choice) {
         Blockchain.require(!Questions.get(questionID).closed && !Questions.get(questionID).voters.contains(Blockchain.getCaller()));
         Questions.get(questionID).voters.add(Blockchain.getCaller());
-        Questions.get(questionID).votes.add(answer);
+        Questions.get(questionID).votes.add(choice);
         if(Questions.get(questionID).votes.size() == Questions.get(questionID).requiredVotes) {
             Questions.get(questionID).closed = true;
             Blockchain.log(("Question"+questionID+"Closed").getBytes());

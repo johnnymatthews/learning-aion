@@ -37,7 +37,7 @@ async function setString() {
         gas: 2000000,
         type: "0x1"
     };
-    
+
     const signedTransaction = await web3.eth.accounts
         .signTransaction(transaction, account.privateKey)
         .then(transactionResponse => (signedCall = transactionResponse));
