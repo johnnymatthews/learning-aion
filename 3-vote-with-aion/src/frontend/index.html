@@ -20,38 +20,24 @@
 
         <section>
             <form>
-                Enter your Private Key:<br>
-                <input type="text" id="private_key_input" placeholder="4b45..." required>
-                <br>
+                <div>
+                    Enter your Private Key:<br>
+                    <input type="text" id="private_key_input" placeholder="4b45..." required>
+                    <center>
+                        <button style="margin:5px;" type='button' id='' onclick='enterPrivateKey()'>Proceed</button>
+                    </center>
+                </div>
                 <center>
-                    <text style="padding-right:10px;">Enter the questionID you would like to vote on:</text>
-                    <select id="poll_picker" style="width:70px;display:inline-block;" name="questionIDs">
-                        <option value=0>0</option>
-                        <option value=1>1</option>
-                        <option value=2>2</option>
-                        <option value=3>3</option>
-                        <option value=4>4</option>
-                    </select>
-                    <button type="button" id="getQuestion_button" onclick="getPoll()">Get Poll</button>
-                    <br>
-                    <h4 style="margin-bottom:5px;" id="question_name"></h4>
-<!--                    <p style="margin-bottom:5px;">Each account may vote once</p>-->
-                    <div id="poll_buttons">
+                    <div id="poll_picker_div">
 
                     </div>
+                    <br>
+                    <div id="poll_div"></div>
                 </center>
-
-<!--                <center>-->
-<!--                    <text onclick="getQuestion(0)"><i id="current_question"></i></text>-->
-<!--                    <button type="button" id="yes_button" onclick="sendAion()">1</button>-->
-<!--                    <button type="button" id="no_button" onclick="sendAion()">2</button>-->
-<!--                </center>-->
-<!--                <br>-->
-<!--                <center>-->
-<!--                    <button type="button" id="submit_button" onclick="sendAion()">Submit Vote</button>-->
-<!--                </center>-->
             </form>
-            <p id="transaction_receipt_output"></p>
+            <center>
+                <p id="transaction_receipt_output"></p>
+            </center>
         </section>
 
         <footer>
