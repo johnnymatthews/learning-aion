@@ -1,9 +1,7 @@
 const nodeUrl = "https://aion.api.nodesmith.io/v1/mastery/jsonrpc?apiKey=da85417fac594f0099708ad6e7ea2e97";
 const web3 = new Web3(new Web3.providers.HttpProvider(nodeUrl));
-let pk='';
-
-let contractAddress = "0xa0c468ba67c12a47637fb21c786b870085b81d6182be2fb2812ac7616dfc8672";
-
+const contractAddress = "0xa06bba6bcf961ade9258b0db1b98ace6bd93a9041aefe35c709d0f8c1d0380b8";
+let pk;
 
 class Poll {
     constructor(question, status, requiredVotes, choices, votes){
@@ -29,31 +27,31 @@ async function enterPrivateKey(){
     pk = document.querySelector('#private_key_input').value;
 
     let abi = `
-    0.0
-    VotingWithAion.Voting
-    Clinit: ()
-    public static String getQuestion(int)
-    public static boolean getQuestionStatus(int)
-    public static int getRequiredVotes(int)
-    public static String[] getChoices(int)
-    public static String[] getVotes(int)
-    public static int getNumberQuestions()
-    public static void newQuestion(String, String[], int)
-    public static void newVote(int, String)
-`;
+        0.0
+        VotingWithAion.Voting
+        Clinit: ()
+        public static String getQuestion(int)
+        public static boolean getQuestionStatus(int)
+        public static int getRequiredVotes(int)
+        public static String[] getChoices(int)
+        public static String[] getVotes(int)
+        public static int getNumberQuestions()
+        public static void newQuestion(String, String[], int)
+        public static void newVote(int, String)
+    `;
 
     abi = `
-    0.0
-    VotingWithAion.Voting
-    Clinit: ()
-    public static String getQuestion(int)
-    public static boolean getQuestionStatus(int)
-    public static int getRequiredVotes(int)
-    public static String[] getChoices(int)
-    public static String[] getVotes(int)
-    public static int getNumberQuestions()
-    public static void newVote(int, String)
-`;
+        0.0
+        VotingWithAion.Voting
+        Clinit: ()
+        public static String getQuestion(int)
+        public static boolean getQuestionStatus(int)
+        public static int getRequiredVotes(int)
+        public static String[] getChoices(int)
+        public static String[] getVotes(int)
+        public static int getNumberQuestions()
+        public static void newVote(int, String)
+    `;
 
     let abiObj = web3.avm.contract.Interface(abi);
     web3.avm.contract.initBinding(contractAddress, abiObj, pk);
@@ -68,8 +66,12 @@ async function drawPollPicker(numberQuestions){
         <select id="poll_picker" style="width:70px;display:inline-block;margin-right: 10px" name="questionIDs">
     `;
 
-    for(let i = 0 ; i<numberQuestions ; i++)
-        html += `<option value=${i}>${i}</option>`;
+    for(let i = 0 ; i<numberQuestions ; i++){
+        if(await getQuestionStatus(i) === false)
+            html += `<option value=${i}>${i}</option>`;
+        else
+            html += `<option style="color: #f44336" value=${i}>${i}</option>`;
+    }
 
     html += `</select><button type="button" id="getPoll_button" onclick="drawPoll()">Get Poll</button>`;
 
@@ -89,9 +91,9 @@ async function drawPoll(){
         <hr>
         <h4 style="margin-bottom:5px;">Question: ${poll.question}</h4>
         <p style="margin-bottom:5px;">Each account may vote once. A second vote will cause a failed transaction.</p>
+        <p style="margin-bottom:5px;">${poll.votes.length}/${poll.requiredVotes} votes casted! ${poll.status ? "The poll has been closed." : "The poll is open!"}</p>
         <div id="poll_buttons">
     `;
-
 
     let voteCount = 0;
     for (let i in poll.choices){
@@ -104,6 +106,14 @@ async function drawPoll(){
     html += `</div>`;
 
     document.getElementById("poll_div").innerHTML = html;
+
+    if(poll.status){
+        let c = document.getElementById("poll_buttons").childNodes;
+        for (i = 0; i < c.length; i++) {
+            c[i].disabled = true;
+        }
+    }
+
     document.querySelector('#transaction_receipt_output').innerHTML = ``;
 
 }
@@ -134,7 +144,6 @@ async function getNumberQuestions() {
 
 async function newVote(questionID, choice) {
     let c = document.getElementById("poll_buttons").childNodes;
-    console.log(document.getElementById("poll_buttons"));
     for (i = 0; i < c.length; i++) {
         c[i].disabled = true;
     }

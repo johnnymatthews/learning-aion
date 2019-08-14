@@ -113,6 +113,16 @@ public class Voting {
         }
     }
 
+    @Callable
+    public static void closeQuestion(int questionID){
+        Blockchain.require(Blockchain.getCaller().equals(owner));
+        Questions.get(questionID).closed = true;
+    }
 
+    @Callable
+    public static void removeQuestion(int questionID){
+        Blockchain.require(Blockchain.getCaller().equals(owner));
+        Questions.get(questionID).closed = true;
+    }
 
 }
