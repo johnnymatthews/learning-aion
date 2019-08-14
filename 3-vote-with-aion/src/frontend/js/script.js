@@ -2,6 +2,34 @@ const nodeUrl = "https://aion.api.nodesmith.io/v1/mastery/jsonrpc?apiKey=da85417
 const web3 = new Web3(new Web3.providers.HttpProvider(nodeUrl));
 const contractAddress = "0xa06bba6bcf961ade9258b0db1b98ace6bd93a9041aefe35c709d0f8c1d0380b8";
 let pk;
+let abi = `
+        0.0
+        VotingWithAion.Voting
+        Clinit: ()
+        public static String getQuestion(int)
+        public static boolean getQuestionStatus(int)
+        public static int getRequiredVotes(int)
+        public static String[] getChoices(int)
+        public static String[] getVotes(int)
+        public static int getNumberQuestions()
+        public static void newQuestion(String, String[], int)
+        public static void newVote(int, String)
+    `;
+
+abi = `
+        0.0
+        VotingWithAion.Voting
+        Clinit: ()
+        public static String getQuestion(int)
+        public static boolean getQuestionStatus(int)
+        public static int getRequiredVotes(int)
+        public static String[] getChoices(int)
+        public static String[] getVotes(int)
+        public static int getNumberQuestions()
+        public static void newVote(int, String)
+    `;
+
+let abiObj = web3.avm.contract.Interface(abi);
 
 class Poll {
     constructor(question, status, requiredVotes, choices, votes){
@@ -25,36 +53,10 @@ async function getPollObject(questionID){
 
 async function enterPrivateKey(){
     pk = document.querySelector('#private_key_input').value;
-
-    let abi = `
-        0.0
-        VotingWithAion.Voting
-        Clinit: ()
-        public static String getQuestion(int)
-        public static boolean getQuestionStatus(int)
-        public static int getRequiredVotes(int)
-        public static String[] getChoices(int)
-        public static String[] getVotes(int)
-        public static int getNumberQuestions()
-        public static void newQuestion(String, String[], int)
-        public static void newVote(int, String)
-    `;
-
-    abi = `
-        0.0
-        VotingWithAion.Voting
-        Clinit: ()
-        public static String getQuestion(int)
-        public static boolean getQuestionStatus(int)
-        public static int getRequiredVotes(int)
-        public static String[] getChoices(int)
-        public static String[] getVotes(int)
-        public static int getNumberQuestions()
-        public static void newVote(int, String)
-    `;
-
-    let abiObj = web3.avm.contract.Interface(abi);
     web3.avm.contract.initBinding(contractAddress, abiObj, pk);
+
+    document.getElementById("private_key_div").innerHTML = '<p>Private Key Received!</p>'
+
     await drawPollPicker(await getNumberQuestions());
 }
 
@@ -144,42 +146,45 @@ async function getNumberQuestions() {
 
 async function newVote(questionID, choice) {
     let c = document.getElementById("poll_buttons").childNodes;
-    for (i = 0; i < c.length; i++) {
+    for (let i = 0; i < c.length; i++)
         c[i].disabled = true;
-    }
 
-    document.querySelector('#transaction_receipt_output').innerHTML = `Awaiting Transaction...`;
+    document.querySelector('#transaction_receipt_output').innerHTML = `Awaiting Transaction... 🐢`;
 
     let privateKeyInput = document.querySelector('#private_key_input').value;
-    const account = web3.eth.accounts.privateKeyToAccount(privateKeyInput);
 
-    let data = web3.avm.contract
-        .method("newVote")
-        .inputs(["int","string"], [questionID,choice])
-        .encode();
+    // web3.avm.contract.initBinding(contractAddress, abiObj, privateKeyInput, web3);
 
-    const transaction = {
-        from: account.address,
-        to: contractAddress,
-        data: data,
-        gasPrice: 100000000000,
-        gas: 2000000,
-        type: "0x1"
-    };
+    let transactionReceipt = await web3.avm.contract.transaction.newVote(questionID, choice);
 
-    const signedTransaction = await web3.eth.accounts
-        .signTransaction(transaction, account.privateKey)
-        .then(transactionResponse => (signedCall = transactionResponse));
-    console.log("Signed Transaction: ", signedTransaction);
-
-    const transactionReceipt = await web3.eth
-        .sendSignedTransaction(signedTransaction.rawTransaction)
-        .on("receipt", receipt => {
-            console.log(
-                "Receipt received!\ntransactionHash =",
-                receipt.transactionHash
-            );
-        });
+    // const account = web3.eth.accounts.privateKeyToAccount(privateKeyInput);
+    // let data = web3.avm.contract
+    //     .method("newVote")
+    //     .inputs(["int","string"], [questionID,choice])
+    //     .encode();
+    //
+    // const transaction = {
+    //     from: account.address,
+    //     to: contractAddress,
+    //     data: data,
+    //     gasPrice: 100000000000,
+    //     gas: 2000000,
+    //     type: "0x1"
+    // };
+    //
+    // const signedTransaction = await web3.eth.accounts
+    //     .signTransaction(transaction, account.privateKey)
+    //     .then(transactionResponse => (signedCall = transactionResponse));
+    // console.log("Signed Transaction: ", signedTransaction);
+    //
+    // const transactionReceipt = await web3.eth
+    //     .sendSignedTransaction(signedTransaction.rawTransaction)
+    //     .on("receipt", receipt => {
+    //         console.log(
+    //             "Receipt received!\ntransactionHash =",
+    //             receipt.transactionHash
+    //         );
+    //     });
 
     console.log("Transaction Receipt: ", transactionReceipt);
     document.querySelector('#transaction_receipt_output').innerHTML = `Latest Tranasction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${transactionReceipt.transactionHash}">${transactionReceipt.transactionHash}</a>`;

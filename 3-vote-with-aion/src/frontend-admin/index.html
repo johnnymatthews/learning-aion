@@ -12,28 +12,30 @@
 <body>
     <main>
         <center>
-            <h1>Aion Voting</h1>
-            <h3>Set a private key. Set poll. Vote on poll.</h3>
-            <p>The private key you're using to send <code>AION</code> needs to have funds in it.</p>
+            <h1>Aion Voting - Admin Side</h1>
+            <h3>Set a private key. Select poll. Create Poll. Close Poll</h3>
+            <p>The private key you're using to vote needs to have funds in it.</p>
             <hr>
         </center>
-
         <section>
             <form>
-                Enter your Private Key:<br>
-                <input type="text" id="private_key_input" placeholder="4b45..." required>
-                <br>
+                <div id="private_key_div">
+                    Enter your Private Key:<br>
+                    <input type="text" id="private_key_input" placeholder="4b45..." required>
+                    <center>
+                        <button style="margin:5px;" type='button' onclick='enterPrivateKey()'>Proceed</button>
+                    </center>
+                </div>
                 <center>
-                    <text onclick="getString()"><i id="current_question"></i></text>
-                    <button type="button" id="yes_button" onclick="sendAion()">Vote Yes</button>
-                    <button type="button" id="no_button" onclick="sendAion()">Vote No</button>
+                    <div id="poll_picker_div"></div>
+                    <div id="poll_div"></div>
                 </center>
-                <br>
-                <center>
-                    <button type="button" id="submit_button" onclick="sendAion()">Submit Vote</button>
-                </center>
+
             </form>
-            <p id="transaction_receipt_output"></p>
+            <center>
+                <p id="transaction_receipt_output"></p>
+            </center>
+            <div id="question_publisher"></div>
         </section>
 
         <footer>
@@ -42,6 +44,6 @@
         </footer>
     </main>
 </body>
-<!--<script src="js/web3.min.js"></script>-->
-<!--<script src="js/script.js"></script>-->
+<script src="js/web3.min.js"></script>
+<script src="js/script.js"></script>
 </html>
