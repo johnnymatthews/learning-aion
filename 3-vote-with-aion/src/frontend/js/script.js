@@ -89,8 +89,8 @@ async function drawPoll(){
 
     let html = `
         <hr>
-        <h4 style="margin-bottom:5px;">Question: ${poll.question}</h4>
-        <p style="margin-bottom:5px;">Each account may vote once. A second vote will cause a failed transaction.</p>
+        <h4 style="margin-bottom:5px;">${poll.question}</h4>
+        <p style="margin-bottom:5px;">Each account may vote once. A double vote will cause a failed transaction.</p>
         <p style="margin-bottom:5px;">${poll.votes.length}/${poll.requiredVotes} votes casted! ${poll.status ? "The poll has been closed." : "The poll is open!"}</p>
         <div id="poll_buttons">
     `;
@@ -114,7 +114,7 @@ async function drawPoll(){
         }
     }
 
-    document.querySelector('#transaction_receipt_output').innerHTML = ``;
+    // document.querySelector('#transaction_receipt_output').innerHTML = ``;
 
 }
 
@@ -182,7 +182,7 @@ async function newVote(questionID, choice) {
         });
 
     console.log("Transaction Receipt: ", transactionReceipt);
-    document.querySelector('#transaction_receipt_output').innerHTML = `Tranasction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${transactionReceipt.transactionHash}">${transactionReceipt.transactionHash}</a>`;
+    document.querySelector('#transaction_receipt_output').innerHTML = `Latest Tranasction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${transactionReceipt.transactionHash}">${transactionReceipt.transactionHash}</a>`;
 
     drawPoll();
 }
