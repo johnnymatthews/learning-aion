@@ -6,7 +6,35 @@ The great thing about this project is that you don't need to use Maven or Intell
 
 ## Running the Project
 
-Since this project is entirely based around the `script.js` and `index.html` files, all you have to do to see everything open the `index.html` file in a browser.
+To view the frontend, since Aiwa needs a server to run for security reasons, you can easily deploy by following the steps below:
+
+1. Install npm serve with:
+
+    ```bash
+    npm install -g serve
+    ```
+
+2. Navigate to the folder that contains the `index.html` file for your frontend
+3. Deploy the local server with:
+
+    ```bash
+    $ serve
+
+    > ┌────────────────────────────────────────────────┐
+    > │                                                │
+    > │   Serving!                                     │
+    > │                                                │
+    > │   - Local:            http://localhost:5000    │
+    > │   - On Your Network:  http://yourPublicIP:5000 │
+    > │                                                │
+    > │   Copied local address to clipboard!           │
+    > │                                                │
+    > └────────────────────────────────────────────────┘
+    ```
+
+    You can type `http://localhost:5000` into your browser to access the frontend.
+
+4. To close, press `CTRL`+`C`
 
 ## File Layout
 

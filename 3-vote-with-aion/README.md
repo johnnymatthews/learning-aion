@@ -1,3 +1,19 @@
 # Vote with Aion
 
-This project is empty right now.
+## Running the Project
+
+## File Layout
+
+## Class Breakdown
+
+## Tests
+
+## Frontend
+
+### Index
+
+### CSS
+
+### JavaScript
+
+## Suggested Improvements

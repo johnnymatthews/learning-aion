@@ -33,7 +33,6 @@ abi = `
 
 let abiObj = web3.avm.contract.Interface(abi);
 
-
 class Poll {
     constructor(question, status, requiredVotes, choices, votes){
         this.question = question;
@@ -56,10 +55,10 @@ async function getPollObject(questionID){
 
 async function enterPrivateKey(){
     pk = document.querySelector('#private_key_input').value;
+
     web3.avm.contract.initBinding(contractAddress, abiObj, pk);
 
-    document.getElementById("private_key_div").innerHTML = '<p>Private Key Received!</p>'
-
+    document.getElementById("private_key_div").innerHTML = '<p>Private Key Received!</p>';
 
     await drawPollPicker(await getNumberQuestions());
     await drawQuestionPublisher();
@@ -74,12 +73,11 @@ async function drawPollPicker(numberQuestions){
         <select id="poll_picker" style="width:70px;display:inline-block;margin-right: 10px" name="questionIDs">
     `;
 
-    for(let i = 0 ; i<numberQuestions ; i++){
+    for(let i = 0 ; i<numberQuestions ; i++)
         if(await getQuestionStatus(i) === false)
             html += `<option value=${i}>${i}</option>`;
         else
             html += `<option style="color: #f44336" value=${i}>${i}</option>`;
-    }
 
     html += `</select><button type="button" id="getPoll_button" onclick="drawPoll()">Get Poll</button>`;
 
@@ -88,12 +86,10 @@ async function drawPollPicker(numberQuestions){
 
 async function drawPoll(){
     let questionID = document.querySelector('#poll_picker').value;
-
     let poll = await getPollObject(questionID);
 
     let html = `
         <h4 style="margin-bottom:5px;">${poll.question}</h4>
-<!--        <p style="margin-bottom:5px;">Each account may vote once. A double vote will cause a failed transaction.</p>-->
         <p style="margin-bottom:5px;">${poll.votes.length}/${poll.requiredVotes} votes casted! ${poll.status ? "The poll has been closed." : "The poll is open!"}</p>
         <div id="poll_votes">
         <p>
@@ -102,30 +98,28 @@ async function drawPoll(){
     let voteCount = 0;
     for (let i in poll.choices){
         for(let j in poll.votes)
-            if(poll.votes[j] === poll.choices[i])
+            if(poll.choices[i] === poll.votes[j])
                 voteCount++;
         html += `${poll.choices[i]}: ${voteCount}<br>`;
         voteCount=0;
     }
 
-    if(poll.status){
+    if(poll.status)
         html += `
             </p></div>
             <button style="margin:5px; background-color: #ea1c0d" type='button' id='close_poll_button' onclick='' disabled>Closed</button>
         `;
-    }else{
+    else
         html += `
             </p></div>
             <button style="margin:5px; background-color: #ea1c0d" type='button' id='close_poll_button' onclick='closeQuestion(${questionID})'>Close Poll</button>
         `;
-    }
 
     document.getElementById("poll_div").innerHTML = html;
-
 }
 
 async function drawQuestionPublisher(){
-    let html = `
+    document.getElementById("question_publisher").innerHTML = `
         <hr>
         <h4>Publish Question</h4>
         <text style="color: #ea1c0d">WILL NOT WORK UNTIL BUG IS FIXED WITH ABI STING[] ARGUMENTS!!!</text><br>
@@ -137,9 +131,6 @@ async function drawQuestionPublisher(){
         <input style="margin-bottom: 20px" type="text" id="required_votes_input" placeholder="71" required>
         <button style="margin:5px;" type='button' id='publish_question_button' onclick='setupNewQuestion()'>Publish Question</button>
     `;
-
-    document.getElementById("question_publisher").innerHTML = html;
-
 }
 
 async function setupNewQuestion(){
@@ -149,9 +140,8 @@ async function setupNewQuestion(){
 
     choices = choices.split(",");
 
-    for(let n = 0 ; n < choices.length ; n++){
+    for(let n = 0 ; n < choices.length ; n++)
         choices[n] = choices[n].trim();
-    }
 
     console.log(question);
     console.log(choices);
@@ -188,24 +178,24 @@ async function getNumberQuestions() {
 async function newQuestion(question, choices, requiredVotes){
     document.querySelector('#transaction_receipt_output').innerHTML = `<hr>Awaiting Transaction...`;
     document.getElementById("publish_question_button").disabled = true;
-    let res = await web3.avm.contract.transaction.newQuestion(question, choices, requiredVotes);
-    document.getElementById("publish_question_button").disabled = false;
-    // document.getElementById("question_publisher").innerHTML += `<hr>`;
-    document.querySelector('#transaction_receipt_output').innerHTML = `<hr>Tranasction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${res.transactionHash}">${res.transactionHash}</a>`;
 
+    let res = await web3.avm.contract.transaction.newQuestion(question, choices, requiredVotes);
+
+    document.getElementById("publish_question_button").disabled = false;
+    document.querySelector('#transaction_receipt_output').innerHTML = `<hr>Tranasction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${res.transactionHash}">${res.transactionHash}</a>`;
 }
 
 async function closeQuestion(questionID){
     console.log("Closing poll #" + questionID + "...");
-    document.querySelector('#transaction_receipt_output').innerHTML = `<hr>Awaiting Transaction...`
+    document.querySelector('#transaction_receipt_output').innerHTML = `<hr>Awaiting Transaction...`;
     document.getElementById("close_poll_button").disabled = true;
     document.getElementById("close_poll_button").innerText = "Closing";
+
     let res = await web3.avm.contract.transaction.closeQuestion(questionID);
+
     document.getElementById("close_poll_button").innerText = "Closed";
     document.querySelector('#transaction_receipt_output').innerHTML = `<hr>Transaction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${res.transactionHash}">${res.transactionHash}</a>`;
-
 }
-
 
 window.onload = async function() {
 

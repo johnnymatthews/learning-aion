@@ -51,13 +51,6 @@ public class Voting {
         questionID = 0;
     }
 
-//    @Callable
-//    public static void setOwner(/*Address newOwner*/){
-////        Blockchain.require(Blockchain.getCaller().equals(owner));
-////        owner = newOwner;
-//        owner = Blockchain.getCaller();
-//    }
-
     @Callable
     public static String getQuestion(int questionID) {
         return Questions.get(questionID).question;
@@ -118,6 +111,5 @@ public class Voting {
         Blockchain.require(Blockchain.getCaller().equals(owner));
         Questions.get(questionID).closed = true;
     }
-
 
 }

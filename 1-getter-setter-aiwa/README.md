@@ -26,7 +26,37 @@ To run this project, you can either [import it into IntelliJ](https://beta-docs.
     mvn aion4j:deploy
     ```
 
-You can now interact with the application in the usual Maven ways. To get the string variable run `mvn aion4j:call -Dmethod='getString'`. To change the string run `mvn aion4j:call -Dmethod='setString' -Dargs='-T "New String!"'`. To view the frontend, just open the `frontend/index.html` file in a browser.
+You can now interact with the application in the usual Maven ways. To get the string variable run `mvn aion4j:call -Dmethod='getString'`. To change the string run `mvn aion4j:call -Dmethod='setString' -Dargs='-T "New String!"'`.
+
+To view the frontend, since Aiwa needs a server to run for security reasons, you can easily deploy by following the steps below:
+
+1. Install npm serve with:
+
+    ```bash
+    npm install -g serve
+    ```
+
+2. Navigate to the folder that contains the `index.html` file for your frontend
+3. Deploy the local server with:
+
+    ```bash
+    $ serve
+
+    > ┌────────────────────────────────────────────────┐
+    > │                                                │
+    > │   Serving!                                     │
+    > │                                                │
+    > │   - Local:            http://localhost:5000    │
+    > │   - On Your Network:  http://yourPublicIP:5000 │
+    > │                                                │
+    > │   Copied local address to clipboard!           │
+    > │                                                │
+    > └────────────────────────────────────────────────┘
+    ```
+
+    You can type `http://localhost:5000` into your browser to access the frontend.
+
+4. To close, press `CTRL`+`C`
 
 ## File Layout
 
