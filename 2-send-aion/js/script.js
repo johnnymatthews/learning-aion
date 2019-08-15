@@ -17,7 +17,7 @@ async function sendAion() {
         gasPrice: 10000000000,
         gas: 2000000,
     };
-    
+
     const signedTransaction = await web3.eth.accounts
         .signTransaction(transaction, account.privateKey)
         .then(transactionResponse => (signedCall = transactionResponse));
@@ -31,7 +31,7 @@ async function sendAion() {
             );
         });
 
-    document.querySelector('#transaction_receipt_output').innerHTML = `Tranasction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${transactionReceipt.transactionHash}">${transactionReceipt.transactionHash}</a>`
+    document.querySelector('#transaction_receipt_output').innerHTML = `Transaction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${transactionReceipt.transactionHash}">${transactionReceipt.transactionHash}</a>`
 
     document.querySelector('#submit_button').innerHTML = 'Submit';
     document.querySelector('#submit_button').disabled = false;

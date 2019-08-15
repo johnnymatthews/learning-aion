@@ -14,6 +14,7 @@ let abi = `
         public static int getNumberQuestions()
         public static void newQuestion(String, String[], int)
         public static void newVote(int, String)
+        public static void closeQuestion(int)
     `;
 
 abi = `
@@ -27,6 +28,7 @@ abi = `
         public static String[] getVotes(int)
         public static int getNumberQuestions()
         public static void newVote(int, String)
+        public static void closeQuestion(int)
     `;
 
 let abiObj = web3.avm.contract.Interface(abi);
@@ -149,7 +151,7 @@ async function newVote(questionID, choice) {
     for (let i = 0; i < c.length; i++)
         c[i].disabled = true;
 
-    document.querySelector('#transaction_receipt_output').innerHTML = `Awaiting Transaction... 🐢`;
+    document.querySelector('#transaction_receipt_output').innerHTML = `Awaiting Transaction...🐢`;
 
     let privateKeyInput = document.querySelector('#private_key_input').value;
 
@@ -187,7 +189,7 @@ async function newVote(questionID, choice) {
     //     });
 
     console.log("Transaction Receipt: ", transactionReceipt);
-    document.querySelector('#transaction_receipt_output').innerHTML = `Latest Tranasction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${transactionReceipt.transactionHash}">${transactionReceipt.transactionHash}</a>`;
+    document.querySelector('#transaction_receipt_output').innerHTML = `Latest Transaction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${transactionReceipt.transactionHash}">${transactionReceipt.transactionHash}</a>`;
 
     drawPoll();
 }

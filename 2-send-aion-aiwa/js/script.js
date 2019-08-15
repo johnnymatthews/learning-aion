@@ -21,7 +21,7 @@ async function sendAion() {
         async function() {
             if(await web3.eth.getTransactionReceipt(txHash)){
                 console.log("onTxComplete");
-                document.querySelector('#transaction_receipt_output').innerHTML = `Tranasction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${txHash}">${txHash}</a>`
+                document.querySelector('#transaction_receipt_output').innerHTML = `Transaction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${txHash}">${txHash}</a>`
                 document.querySelector('#submit_button').innerHTML = 'Submit';
                 document.querySelector('#submit_button').disabled = false;
                 clearInterval(timer);

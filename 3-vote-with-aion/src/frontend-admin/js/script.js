@@ -14,6 +14,7 @@ let abi = `
         public static int getNumberQuestions()
         public static void newQuestion(String, String[], int)
         public static void newVote(int, String)
+        public static void closeQuestion(int)
     `;
 
 abi = `
@@ -27,6 +28,7 @@ abi = `
         public static String[] getVotes(int)
         public static int getNumberQuestions()
         public static void newVote(int, String)
+        public static void closeQuestion(int)
     `;
 
 let abiObj = web3.avm.contract.Interface(abi);
@@ -114,7 +116,7 @@ async function drawPoll(){
     }else{
         html += `
             </p></div>
-            <button style="margin:5px; background-color: #ea1c0d" type='button' id='close_poll_button' onclick=''>Close Poll</button>
+            <button style="margin:5px; background-color: #ea1c0d" type='button' id='close_poll_button' onclick='closeQuestion(${questionID})'>Close Poll</button>
         `;
     }
 
@@ -126,14 +128,14 @@ async function drawQuestionPublisher(){
     let html = `
         <hr>
         <h4>Publish Question</h4>
-        WILL NOT WORK UNTIL BUG IS FIXED WITH ABI STING[] ARGUMENTS!!!<br>
+        <text style="color: #ea1c0d">WILL NOT WORK UNTIL BUG IS FIXED WITH ABI STING[] ARGUMENTS!!!</text><br>
         Question:
         <input style="margin-bottom: 20px" type="text" id="question_input" placeholder="What is your favorite color?" required>
         Choices:
         <input style="margin-bottom: 20px" type="text" id="choices_input" placeholder='Blue, Red, Yellow' required>
         Required Votes until Closed:
         <input style="margin-bottom: 20px" type="text" id="required_votes_input" placeholder="71" required>
-        <button style="margin:5px;" type='button' onclick='setupNewQuestion()'>Publish Question</button>
+        <button style="margin:5px;" type='button' id='publish_question_button' onclick='setupNewQuestion()'>Publish Question</button>
     `;
 
     document.getElementById("question_publisher").innerHTML = html;
@@ -184,12 +186,23 @@ async function getNumberQuestions() {
 
 // WILL NOT WORK UNTIL BUG IS FIXED WITH ABI STING[] ARGUMENTS!!!
 async function newQuestion(question, choices, requiredVotes){
-    console.log("Publishing Question...")
+    document.querySelector('#transaction_receipt_output').innerHTML = `<hr>Awaiting Transaction...`;
+    document.getElementById("publish_question_button").disabled = true;
     let res = await web3.avm.contract.transaction.newQuestion(question, choices, requiredVotes);
-    console.log(res); //receipt
+    document.getElementById("publish_question_button").disabled = false;
+    // document.getElementById("question_publisher").innerHTML += `<hr>`;
+    document.querySelector('#transaction_receipt_output').innerHTML = `<hr>Tranasction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${res.transactionHash}">${res.transactionHash}</a>`;
+
 }
 
-async function closeQuestion(){
+async function closeQuestion(questionID){
+    console.log("Closing poll #" + questionID + "...");
+    document.querySelector('#transaction_receipt_output').innerHTML = `<hr>Awaiting Transaction...`
+    document.getElementById("close_poll_button").disabled = true;
+    document.getElementById("close_poll_button").innerText = "Closing";
+    let res = await web3.avm.contract.transaction.closeQuestion(questionID);
+    document.getElementById("close_poll_button").innerText = "Closed";
+    document.querySelector('#transaction_receipt_output').innerHTML = `<hr>Transaction Receipt: <a target="_blank" href="https://mastery.aion.network/#/transaction/${res.transactionHash}">${res.transactionHash}</a>`;
 
 }
 
