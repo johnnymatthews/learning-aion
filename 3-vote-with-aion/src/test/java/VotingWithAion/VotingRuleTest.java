@@ -2,15 +2,12 @@ package VotingWithAion;
 
 import avm.Address;
 import org.aion.avm.embed.AvmRule;
-import org.aion.avm.tooling.ABIUtil;
 import org.aion.avm.userlib.abi.ABIStreamingEncoder;
-import org.aion.kernel.AvmTransactionResult;
 import org.aion.types.TransactionStatus;
 import org.junit.*;
 
-import java.lang.reflect.Array;
 import java.math.BigInteger;
-import java.util.Arrays;
+
 
 public class VotingRuleTest {
 
@@ -118,7 +115,7 @@ public class VotingRuleTest {
 
         // Cast the return type
         Integer res = (Integer) result.getDecodedReturnData();
-        Assert.assertTrue(res.equals(1));
+        Assert.assertEquals(1, (int) res);
     }
 
     @Test
@@ -138,7 +135,7 @@ public class VotingRuleTest {
 
         // Cast the return type
         String res = (String) result.getDecodedReturnData();
-        Assert.assertTrue(res.equals(question));
+        Assert.assertEquals(res, question);
     }
 
     @Test
@@ -158,7 +155,7 @@ public class VotingRuleTest {
 
         // Cast the return type
         boolean res = (boolean) result.getDecodedReturnData();
-        Assert.assertTrue(!res);
+        Assert.assertFalse(res);
 
         closeQuestion(deployer, 0);
 
@@ -192,7 +189,7 @@ public class VotingRuleTest {
 
         // Cast the return type
         Integer res = (Integer) result.getDecodedReturnData();
-        Assert.assertTrue(res.equals(requiredVotes));
+        Assert.assertEquals((int) res, requiredVotes);
     }
 
     @Test
@@ -211,7 +208,7 @@ public class VotingRuleTest {
 
         // Cast the return type
         String[] res = (String[]) result.getDecodedReturnData();
-        Assert.assertTrue(Arrays.equals(res, choices));
+        Assert.assertArrayEquals(res, choices);
     }
 
     @Test
@@ -235,10 +232,8 @@ public class VotingRuleTest {
 
         // Cast the return type
         String[] res = (String[]) result.getDecodedReturnData();
-        Assert.assertTrue(Arrays.equals(res, votes));
+        Assert.assertArrayEquals(res, votes);
     }
-
-
 
 }
 

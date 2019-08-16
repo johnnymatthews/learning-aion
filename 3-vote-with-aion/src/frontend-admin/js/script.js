@@ -17,6 +17,7 @@ let abi = `
         public static void closeQuestion(int)
     `;
 
+//TODO: remove this vvvv when abi bug is fixed... keep the one above
 abi = `
         0.0
         VotingWithAion.Voting
@@ -174,7 +175,10 @@ async function getNumberQuestions() {
     return await web3.avm.contract.readOnly.getNumberQuestions();
 }
 
-// WILL NOT WORK UNTIL BUG IS FIXED WITH ABI STING[] ARGUMENTS!!!
+//TODO: WILL NOT WORK UNTIL BUG IS FIXED WITH ABI STING[] ARGUMENTS!!!
+// when bug is fixed, remove the second abi from the global variables above.
+// Keep the abi declaration with the line
+// `public static void newQuestion(String, String[], int)` in it
 async function newQuestion(question, choices, requiredVotes){
     document.querySelector('#transaction_receipt_output').innerHTML = `<hr>Awaiting Transaction...`;
     document.getElementById("publish_question_button").disabled = true;
