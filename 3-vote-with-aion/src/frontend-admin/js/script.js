@@ -17,7 +17,7 @@ let abi = `
         public static void closeQuestion(int)
     `;
 
-//TODO: remove this vvvv when abi bug is fixed... keep the one above
+//TODO: remove this when abi bug is fixed... keep the one above
 abi = `
         0.0
         VotingWithAion.Voting
@@ -52,6 +52,30 @@ async function getPollObject(questionID){
         await getChoices(questionID),
         await getVotes(questionID),
     );
+}
+
+async function getNumberQuestions() {
+    return await web3.avm.contract.readOnly.getNumberQuestions();
+}
+
+async function getQuestion(questionID) {
+    return await web3.avm.contract.readOnly.getQuestion(questionID);
+}
+
+async function getQuestionStatus(questionID) {
+    return await web3.avm.contract.readOnly.getQuestionStatus(questionID);
+}
+
+async function getRequiredVotes(questionID) {
+    return await web3.avm.contract.readOnly.getRequiredVotes(questionID);
+}
+
+async function getChoices(questionID) {
+    return await web3.avm.contract.readOnly.getChoices(questionID);
+}
+
+async function getVotes(questionID) {
+    return await web3.avm.contract.readOnly.getVotes(questionID);
 }
 
 async function enterPrivateKey(){
@@ -122,7 +146,7 @@ async function drawPoll(){
 async function drawQuestionPublisher(){
     document.getElementById("question_publisher").innerHTML = `
         <hr>
-        <h4>Publish Question</h4>
+        <h4>Publish Poll</h4>
         <text style="color: #ea1c0d">WILL NOT WORK UNTIL BUG IS FIXED WITH ABI STING[] ARGUMENTS!!!</text><br>
         Question:
         <input style="margin-bottom: 20px" type="text" id="question_input" placeholder="What is your favorite color?" required>
@@ -151,31 +175,7 @@ async function setupNewQuestion(){
     await newQuestion(question, choices, requiredVotes);
 }
 
-async function getQuestion(questionID) {
-    return await web3.avm.contract.readOnly.getQuestion(questionID);
-}
-
-async function getQuestionStatus(questionID) {
-    return await web3.avm.contract.readOnly.getQuestionStatus(questionID);
-}
-
-async function getRequiredVotes(questionID) {
-    return await web3.avm.contract.readOnly.getRequiredVotes(questionID);
-}
-
-async function getChoices(questionID) {
-    return await web3.avm.contract.readOnly.getChoices(questionID);
-}
-
-async function getVotes(questionID) {
-    return await web3.avm.contract.readOnly.getVotes(questionID);
-}
-
-async function getNumberQuestions() {
-    return await web3.avm.contract.readOnly.getNumberQuestions();
-}
-
-//TODO: WILL NOT WORK UNTIL BUG IS FIXED WITH ABI STING[] ARGUMENTS!!!
+//TODO: WILL NOT WORK UNTIL BUG IS FIXED WITH ABI STRING[] ARGUMENTS!!!
 // when bug is fixed, remove the second abi from the global variables above.
 // Keep the abi declaration with the line
 // `public static void newQuestion(String, String[], int)` in it
