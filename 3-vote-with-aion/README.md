@@ -41,7 +41,7 @@ import org.aion.avm.userlib.AionMap;
 import org.aion.avm.userlib.AionSet;
 
 public class Voting {
- ...
+    ...
 }
 ```
 
@@ -56,31 +56,31 @@ private static int questionID;
 Next, we have to define the class `QuestionsInfo` that the `questions` **AionMap** is referencing in the static variable declaration above. This class will hold all of the data from each question. It is made up of instance-variable declarations and a constructor to initialize.
 
 ```java
- private static class QuestionInfo {
- String question;
- String[] choices;
- int requiredVotes;
- boolean closed;
- AionList<String> votes;
- AionSet<Address> voters;
+private static class QuestionInfo {
+    String question;
+    String[] choices;
+    int requiredVotes;
+    boolean closed;
+    AionList<String> votes;
+    AionSet<Address> voters;
 
- QuestionInfo(String question, String[] choices, int requiredVotes) {
- this.question = question;
- this.choices = choices;
- this.requiredVotes = requiredVotes;
- this.votes = new AionList<>();
- this.closed = false;
- this.voters = new AionSet<>();
- }
- }
+    QuestionInfo(String question, String[] choices, int requiredVotes) {
+        this.question = question;
+        this.choices = choices;
+        this.requiredVotes = requiredVotes;
+        this.votes = new AionList<>();
+        this.closed = false;
+        this.voters = new AionSet<>();
+    }
+}
 ```
 
 Next up, we create our `clinit`. This is a function that is called when we first _deploy_ our contract. It is only ever called once. Here, we will initialize the static variables that we declared above.
 
 ```java
 static {
- owner = Blockchain.getCaller();
- questionID = 0;
+    owner = Blockchain.getCaller();
+    questionID = 0;
 }
 ```
 
