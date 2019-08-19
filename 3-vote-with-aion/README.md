@@ -127,7 +127,7 @@ Then, we will also write three methods to interact with the class from the front
 
 3. `closeQuestion` will close an existing question regardless of if it has reached its `requiredVotes` condition. This method can only be called by the contract owner, assigned to the deployer address.
 
-    This method takes in a `quesitonID` parameter and will prematurely close a question after checking if the caller is the owner.
+    This method takes in a `questionID` parameter and will prematurely close a question after checking if the caller is the owner.
 
     ```java
     @Callable
@@ -136,17 +136,6 @@ Then, we will also write three methods to interact with the class from the front
         questions.get(questionID).closed = true;
     }
     ```
-
-<!-- ## Tests -->
-
-Next up, we create three global variables that we're going to be using within our tests.
-
-```java
- @ClassRule
- public static AvmRule avmRule = new AvmRule(true);
- private static Address deployer = avmRule.getPreminedAccount();
- private static Address contractAddress;
-```
 
 ## Frontend
 
