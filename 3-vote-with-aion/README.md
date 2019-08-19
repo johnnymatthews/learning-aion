@@ -137,24 +137,7 @@ Then, we will also write three methods to interact with the class from the front
     }
     ```
 
-<!-- noneed? -->
-## Tests
-
-First up, we start by defining which packages we need to import for this class. After that, we define our main class.
-
-```java
-package VotingWithAion;
-import avm.Address;
-import org.aion.avm.embed.AvmRule;
-import org.aion.avm.userlib.abi.ABIStreamingEncoder;
-import org.aion.types.TransactionStatus;
-import org.junit.*;
-import java.math.BigInteger;
-
-public class VotingRuleTest {
- ...
-}
-```
+<!-- ## Tests -->
 
 Next up, we create three global variables that we're going to be using within our tests.
 
