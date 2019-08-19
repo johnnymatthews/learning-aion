@@ -3,33 +3,18 @@ const web3 = new Web3(new Web3.providers.HttpProvider(nodeUrl));
 const contractAddress = "0xa06bba6bcf961ade9258b0db1b98ace6bd93a9041aefe35c709d0f8c1d0380b8";
 let pk;
 let abi = `
-        0.0
-        VotingWithAion.Voting
-        Clinit: ()
-        public static String getQuestion(int)
-        public static boolean getQuestionStatus(int)
-        public static int getRequiredVotes(int)
-        public static String[] getChoices(int)
-        public static String[] getVotes(int)
-        public static int getNumberQuestions()
-        public static void newQuestion(String, String[], int)
-        public static void newVote(int, String)
-        public static void closeQuestion(int)
-    `;
-
-abi = `
-        0.0
-        VotingWithAion.Voting
-        Clinit: ()
-        public static String getQuestion(int)
-        public static boolean getQuestionStatus(int)
-        public static int getRequiredVotes(int)
-        public static String[] getChoices(int)
-        public static String[] getVotes(int)
-        public static int getNumberQuestions()
-        public static void newVote(int, String)
-        public static void closeQuestion(int)
-    `;
+    0.0
+    VotingWithAion.Voting
+    Clinit: ()
+    public static String getQuestion(int)
+    public static boolean getQuestionStatus(int)
+    public static int getRequiredVotes(int)
+    public static String[] getChoices(int)
+    public static String[] getVotes(int)
+    public static int getNumberQuestions()
+    public static void newVote(int, String)
+    public static void closeQuestion(int)
+`;
 
 let abiObj = web3.avm.contract.Interface(abi);
 

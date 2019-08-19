@@ -232,6 +232,12 @@ The `enterPrivateKey` function serves to receive the private key from the user a
 
 The `drawPollPicker`, `drawPoll` and `drawQuestionPublisher` functions will draw the UI to manage polls and publish them by pulling data from the `Poll` object we instantiated.
 
+Now, lets make our transaction functions to be able to change values on our contracts. Both `newQuestion` and `closeQuestion` are written very similarly to a contract call. However instead of using `web3.avm.contract.readOnly`, we use `web3.avm.contract.transaction`. For example:
+
+```java
+await web3.avm.contract.transaction.newQuestion(question, choices, requiredVotes);
+```
+
 ### Frontend Voting Page
 
 The purpose of this page is to allow users to:
@@ -240,11 +246,11 @@ The purpose of this page is to allow users to:
 2. View poll details
 3. Vote on Polls
 
-#### Index - Voting
+Found in `frontend/`, the frontend voting page should adhere to a similar structure as the admin page. It includes:
 
-This file is relatively straightforward. You will notice that there are some empty `<div>`s with id attributes such as `poll_picker_div` or `poll_div`. Just like in the admin page, these are empty because the contents will be added to the page through the JavaScript script once the private key is received.
-
-#### JavaScript - Voting
+- The contract call functions that use the abi to receive info on the available polls.
+- The endpoint functions that are called by the buttons on the frontend
+- A contract transaction function to send a vote to the contract.
 
 ### CSS
 
