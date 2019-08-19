@@ -1,10 +1,10 @@
 # Vote with Aion
 
-In this project, we've created a voting DApp in which you can vote on polls, create polls, or close polls from a javascript frontend. The backend was created using a Java smart-contract and the javascript frontend is split into a voters page and an admins page.
+In this project, we've created a voting DApp in which you can vote in polls, create polls, or close polls from a javascript frontend. The backend was created using a Java smart-contract and the javascript frontend is split into a voters page and an admins page.
 
-The Java smart-contract was tested and deployed with the [Aion4j IntelliJ plugin](https://beta-docs.aion.network/developers/tools/intellij-plugin/overview/), however the [Maven CLI](https://beta-docs.aion.network/developers/tools/maven-cli/overview/) tool will work just as well.
+The Java smart-contract was tested and deployed with the [Aion4j IntelliJ plugin](https://beta-docs.aion.network/developers/tools/intellij-plugin/overview/), however, the [Maven CLI](https://beta-docs.aion.network/developers/tools/maven-cli/overview/) tool will work just as well.
 
-The Java class allows the owner, the account which deployed it,to publish or close questions and any account on the network is able to vote on each of those polls once.
+The Java class allows the owner, the account which deployed it, to publish or close questions and any account on the network can vote on each of those polls once.
 
 ## Running the Project
 
@@ -41,7 +41,7 @@ import org.aion.avm.userlib.AionMap;
 import org.aion.avm.userlib.AionSet;
 
 public class Voting {
-    ...
+ ...
 }
 ```
 
@@ -53,34 +53,34 @@ private static AionMap<Integer, QuestionInfo> questions = new AionMap<>();
 private static int questionID;
 ```
 
-Next, we have to define the class `QuestionsInfo` that the `questions` **AionMap** is referencing in the static variable declaration above. This class will hold all of the data pertaining to each question. It is made up of instance-variable declarations and a constructor to initialize.
+Next, we have to define the class `QuestionsInfo` that the `questions` **AionMap** is referencing in the static variable declaration above. This class will hold all of the data from each question. It is made up of instance-variable declarations and a constructor to initialize.
 
 ```java
-    private static class QuestionInfo {
-        String question;
-        String[]  choices;
-        int requiredVotes;
-        boolean closed;
-        AionList<String> votes;
-        AionSet<Address> voters;
+ private static class QuestionInfo {
+ String question;
+ String[] choices;
+ int requiredVotes;
+ boolean closed;
+ AionList<String> votes;
+ AionSet<Address> voters;
 
-        QuestionInfo(String question, String[] choices, int requiredVotes) {
-            this.question = question;
-            this.choices = choices;
-            this.requiredVotes = requiredVotes;
-            this.votes = new AionList<>();
-            this.closed = false;
-            this.voters = new AionSet<>();
-        }
-    }
+ QuestionInfo(String question, String[] choices, int requiredVotes) {
+ this.question = question;
+ this.choices = choices;
+ this.requiredVotes = requiredVotes;
+ this.votes = new AionList<>();
+ this.closed = false;
+ this.voters = new AionSet<>();
+ }
+ }
 ```
 
 Next up, we create our `clinit`. This is a function that is called when we first _deploy_ our contract. It is only ever called once. Here, we will initialize the static variables that we declared above.
 
 ```java
 static {
-    owner = Blockchain.getCaller();
-    questionID = 0;
+ owner = Blockchain.getCaller();
+ questionID = 0;
 }
 ```
 
@@ -94,7 +94,7 @@ Then, we will also write three methods to interact with the class from the front
 
     It first checks whether the caller is the owner of the contract. If not the transaction will fail. Otherwise, the question will be constructed from `QuestionInfo` and added to `questions`.
 
-    ```java
+     ```java
     @Callable
     public static void newQuestion(String question, String[] choices, int requiredVotes) {
         Blockchain.require(Blockchain.getCaller().equals(owner));
@@ -127,12 +127,12 @@ Then, we will also write three methods to interact with the class from the front
 
 3. `closeQuestion` will close an existing question regardless of if it has reached its `requiredVotes` condition. This method can only be called by the contract owner, assigned to the deployer address.
 
-    This method takes in a `quesitonID` parameter and will prematurely close a question after checking if the caller ist the owner.
+    This method takes in a `quesitonID` parameter and will prematurely close a question after checking if the caller is the owner.
 
     ```java
     @Callable
     public static void closeQuestion(int questionID){
-        Blockchain.require(Blockchain.getCaller().equals(owner));
+    Blockchain.require(Blockchain.getCaller().equals(owner));
         questions.get(questionID).closed = true;
     }
     ```
@@ -152,22 +152,22 @@ import org.junit.*;
 import java.math.BigInteger;
 
 public class VotingRuleTest {
-    ...
+ ...
 }
 ```
 
 Next up, we create three global variables that we're going to be using within our tests.
 
 ```java
-    @ClassRule
-    public static AvmRule avmRule = new AvmRule(true);
-    private static Address deployer = avmRule.getPreminedAccount();
-    private static Address contractAddress;
+ @ClassRule
+ public static AvmRule avmRule = new AvmRule(true);
+ private static Address deployer = avmRule.getPreminedAccount();
+ private static Address contractAddress;
 ```
 
 ## Frontend
 
-The frontend is split between two pages, the voting page and the admin page. The code for these pages is found within `src/frontend/` and `src/frontend-admin/` respectively. Each of those folders contain the following:
+The frontend is split between two pages, the voting page and the admin page. The code for these pages is found within `src/frontend/` and `src/frontend-admin/` respectively. Each of those folders contains the following:
 
 - `index.html`: The markup for the webpage, this is just plain HTML.
 - `css`: contains the `marx.min.css` file, which is just a classless CSS framework.
@@ -194,9 +194,9 @@ This file is relatively straightforward. You will notice that there are some emp
 
 #### JavaScript - Admin
 
-As mentioned before, we have two JavaScript files: `web3.min.js` and `script.js`. The `web3.min.js` file is taken from the [Aion Web3.js repository](https://github.com/aionnetwork/aion_web3), and we won't be changing anything within this file. All of our coding takes place within the `script.js` file.
+As mentioned before, we have two JavaScript files: `web3.min.js` and `script.js`. The `web3.min.js` file is taken from the [Aion Web3.js repository](https://github.com/aionnetwork/aion_web3), and we won't be changing anything within this file. All of our code takes place within the `script.js` file.
 
-Right at the top of `script.js` we define three global variables:
+Right at the top of `script.js`, we define three global variables:
 
 - `nodeUrl`: the URL of the Aion node we want to connect to.
 - `web3`: a copy of the `Web3` objected defined by `web3.min.js`. This object takes our `nodeUrl` as an argument so it knows where to route the calls through.
@@ -228,7 +228,7 @@ await web3.avm.contract.readOnly.getQuestionStatus(questionID);
 
 We do this for each value that we need to pull from the contract.
 
-The `enterPrivateKey` function serves to receive the private key from the user and assign it to the global `pk` variable. In order to make contract calls with this way of using web3, you must include `pk` in the binding method that links the `contractAddress` to the `abiObj` initialized above. After completing these tasks, the function will call the `drawPollPicker` and `drawQuestionPublisher` method.
+The `enterPrivateKey` function serves to receive the private key from the user and assign it to the global `pk` variable. To make contract calls with this way of using web3, you must include `pk` in the binding method that links the `contractAddress` to the `abiObj` initialized above. After completing these tasks, the function will call the `drawPollPicker` and `drawQuestionPublisher` method.
 
 The `drawPollPicker`, `drawPoll` and `drawQuestionPublisher` functions will draw the UI to manage polls and publish them by pulling data from the `Poll` object we instantiated.
 
@@ -258,4 +258,4 @@ We're using [Mblode's](https://github.com/mblode) incredible [Marx CSS framework
 
 ## Suggested Improvements
 
-There's a lot of room for improvement in this application. Having a user enter their private key into a window is not best practice. A better solution would be to couple this application with a browser wallet like [Syna+](https://chrome.google.com/webstore/detail/syna%20/bnhpllgghialpkpbeenoalpeoneieaje) or [Aiwa](https://getaiwa.com/). There is also no validation on any of the input fields, which would be a big issue if this application were in a production environment. This includes the fact that if a transaction fails due to lack of owner status or tha fact an account has already voted, the user does have any feedback to tell them this.
+There's a lot of room for improvement in this application. Having a user enter their private key into a window is not best practice. A better solution would be to couple this application with a browser wallet like [Syna+](https://chrome.google.com/webstore/detail/syna%20/bnhpllgghialpkpbeenoalpeoneieaje) or [Aiwa](https://getaiwa.com/). There is also no validation on any of the input fields, which would be a big issue if this application were in a production environment. This includes the fact that if a transaction fails due to lack of owner status or the fact an account has already voted, the user does have any feedback to tell them this.

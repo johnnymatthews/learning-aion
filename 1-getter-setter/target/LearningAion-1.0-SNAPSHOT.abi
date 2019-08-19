@@ -1,5 +1,0 @@
-0.0
-GetterSetter.GetSet
-Clinit: ()
-public static String getString()
-public static void setString(String)
