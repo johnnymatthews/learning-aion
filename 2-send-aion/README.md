@@ -15,7 +15,7 @@ There are three main sections within this project that we're concerned with:
 - `index.html`: The markup for the webpage, this is just plain HTML.
 - `css`: contains the `marx.min.css` file, which is just a classless CSS framework.
 - `js`:
- - `web3.js`: creates a `Web3` object that allows us to integrate into the blockchain network.
+ - `web3.min.js`: creates a `Web3` object that allows us to integrate into the blockchain network.
  - `script.js`: contains our custom logic that lets the user interact with our application.
 
 ### Index
@@ -35,12 +35,12 @@ We're using [Mblode's](https://github.com/mblode) incredible [Marx CSS framework
 
 ### JavaScript
 
-As mentioned before, we have two JavaScript files: `web3.js` and `script.js`. The `web3.js` file is taken from the [Aion Web3.js repository](https://github.com/aionnetwork/aion_web3), and we won't be changing anything within this file. All of our coding takes place within the `script.js` file.
+As mentioned before, we have two JavaScript files: `web3.min.js` and `script.js`. The `web3.min.js` file is taken from the [Aion Web3.js repository](https://github.com/aionnetwork/aion_web3), and we won't be changing anything within this file. All of our coding takes place within the `script.js` file.
 
 Right at the top of `script.js` we define two global variables:
 
 - `nodeUrl`: the URL of the Aion node we want to connect to.
-- `web3`: a copy of the `Web3` objected defined by `web3.js`. This object takes our `nodeUrl` as an argument so it knows where to route the calls through.
+- `web3`: a copy of the `Web3` objected defined by `web3.min.js`. This object takes our `nodeUrl` as an argument so it knows where to route the calls through.
 
 There is only one function within this script, `sendAion()`. This function has the `async` attribute, meaning that it will be executed asynchronously as soon as it is available. You can find out more about `async` functions from the [Mozilla Developers Network](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function).
 

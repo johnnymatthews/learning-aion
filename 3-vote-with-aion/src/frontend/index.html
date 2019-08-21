@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang=en>
+
+<head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content='IE=edge;chrome=1'>
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <title>Aion Voting Application</title>
+    <link rel=stylesheet href="css/marx.min.css">
+</head>
+
+<body>
+    <main>
+        <center>
+            <h1>Aion Voting</h1>
+            <h3>Set a private key. Select poll. Vote on poll.</h3>
+            <p>The private key you're using to vote needs to have funds in it.</p>
+            <hr>
+        </center>
+        <section>
+            <form>
+                <div id="private_key_div">
+                    Enter your Private Key:<br>
+                    <input type="text" id="private_key_input" placeholder="4b45..." required>
+                    <center>
+                        <button style="margin:5px;" type='button' id='' onclick='enterPrivateKey()'>Proceed</button>
+                    </center>
+                </div>
+                <center>
+                    <div id="poll_picker_div"></div>
+                    <div id="poll_div"></div>
+                </center>
+            </form>
+            <center>
+                <p id="transaction_receipt_output"></p>
+            </center>
+        </section>
+
+        <footer>
+            <p>For more info, check out the <a href="https://github.com/mohnjatthews/learning-aion">Learning Aion Project.</a></p>
+            <p>&copy; 2019 &middot; <a href="https://aion.foundation">Aion Foundation</a></p>
+        </footer>
+    </main>
+</body>
+<script src="js/web3.min.js"></script>
+<script src="js/script.js"></script>
+</html>
