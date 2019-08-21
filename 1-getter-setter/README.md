@@ -236,7 +236,7 @@ const transactionObject = {
 };
 ```
 
-The `type` field can cause some confusion sometimes, so I'll clear it up here. If we're just making a call to an application and we're **not** _changing_ the blockchain in any way, then our type should be set to `0x1`. In our call, we are getting the value of a variable. We aren't changing the value of that variable, so we're not changing the _state_ of the blockchain. This is important because requesting the value of a variable is free, but changing a variable means changing the _state_ of the blockchain, and this requires funds. We'll get onto this later.
+The `type` field can cause some confusion sometimes, so I'll clear it up here. The `0x1` type is reserved for contract call and transactions. The `0x2` type is reserved for deploying transactions. If the node receives any other number in this field (`0x3` or `0x99` for example) it will default back to `0x1` and assume you are attempting a contract call or transaction.
 
 Once our transaction object has been created, we make the call to the blockchain and wait for the response. The `initialResponse` variable will hold the response information _once_ the blockchain has returned some data. The `await` modifier here is very important. If that modifier wasn't there then the JavaScript would expect a response immediately. But because we're dealing with a blockchain network here, we have to wait for the process to finish.
 
